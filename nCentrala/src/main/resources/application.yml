@@ -1,0 +1,33 @@
+spring:
+   application:
+      name: nCentrala
+   datasource:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/NC?useSSL=false&createDatabaseIfNotExist=true
+      username: root
+      password: sifra
+      initialization-mode: always
+   jpa:
+      show-sql: true
+      hiberanate: 
+         ddl-auto: create-drop
+      database-platform: org.hibernate.dialect.MySQL5Dialect
+      generate-ddl: true
+   data:
+      elasticsearch:
+         cluster-name: Java-Techie
+         cluster-nodes: localhost:9300
+         properties:
+            http:
+               enabled: true
+   http:
+      multipart:
+         max-file-size: 1MB
+         max-request-size: 1MB  
+         
+elasticsearch:
+   baseUrl: http://localhost:9200/
+   
+server:
+   port: 8090
+   
