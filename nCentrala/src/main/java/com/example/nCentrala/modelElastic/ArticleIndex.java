@@ -12,11 +12,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import com.example.nCentrala.domain.Journal;
-import com.example.nCentrala.domain.ScienceArea;
+import com.example.nCentrala.model.Journal;
+import com.example.nCentrala.model.ScienceArea;
 
-@Document(indexName = ArticleDoc.INDEX_NAME, type = ArticleDoc.TYPE_NAME, shards = 1, replicas = 0)
-public class ArticleDoc {
+@Document(indexName = ArticleIndex.INDEX_NAME, type = ArticleIndex.TYPE_NAME, shards = 1, replicas = 0)
+public class ArticleIndex {
 
 	public static final String INDEX_NAME = "articleindex";
 	public static final String TYPE_NAME = "article";
@@ -33,11 +33,14 @@ public class ArticleDoc {
 	@Column(nullable = false)
 	private String apstract;
 	
-	@Field(type=FieldType.Text, store = true)
+	@Column(nullable = false)
+	private String content;
+	
+	/*@Field(type=FieldType.Text, store = true)
 	private String keyWords;
 	
 	@Field(type=FieldType.Text, store = true)
-	private String scienceArea;
+	private String scienceArea; */
 	
 	@Field(type=FieldType.Text, store = true)
 	private String journal;
@@ -65,8 +68,9 @@ public class ArticleDoc {
 	public void setApstract(String apstract) {
 		this.apstract = apstract;
 	}
+	
 
-	public String getKeyWords() {
+	/*public String getKeyWords() {
 		return keyWords;
 	}
 
@@ -80,6 +84,14 @@ public class ArticleDoc {
 
 	public void setScienceArea(String scienceArea) {
 		this.scienceArea = scienceArea;
+	}*/
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public String getJournal() {

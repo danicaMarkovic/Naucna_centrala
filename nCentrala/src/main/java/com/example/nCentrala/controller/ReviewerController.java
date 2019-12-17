@@ -9,35 +9,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.nCentrala.modelElastic.ArticleIndex;
-import com.example.nCentrala.service.ArticleService;
-
+import com.example.nCentrala.modelElastic.ReviewerIndex;
+import com.example.nCentrala.service.ReviewerService;
 
 @RestController
-@RequestMapping("article")
-public class ArticleDocController {
+@RequestMapping("reviewer")
+public class ReviewerController {
 
 	@Autowired
-	private ArticleService articleService;
+	private ReviewerService reviewerService;
 	
 	@GetMapping("/getAll")
-	public Iterable<ArticleIndex> getAllArticles()
+	public Iterable<ReviewerIndex> getAllArticles()
 	{
 		
-		return articleService.findAll();
+		return reviewerService.findAll();
 	}
 	
-	@PostMapping("/addArticle")
-	public ResponseEntity<String> addNewArticle(@RequestBody ArticleIndex article)
+	@PostMapping("/addReviewer")
+	public ResponseEntity<String> addNewArticle(@RequestBody ReviewerIndex article)
 	{
-		boolean ret = articleService.addArticle(article);
+		boolean ret = reviewerService.addReviewer(article);
 		
 		if(ret)
 		{
-			return new ResponseEntity<String>("Article added", HttpStatus.OK);
+			return new ResponseEntity<String>("Reviewer added", HttpStatus.OK);
 		}else
 		{
 			return new ResponseEntity<String>("Error", HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
 }

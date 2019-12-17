@@ -1,4 +1,4 @@
-package com.example.nCentrala.domain;
+package com.example.nCentrala.model;
 
 import java.io.Serializable;
 import java.util.HashSet;

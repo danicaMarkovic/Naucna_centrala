@@ -15,7 +15,7 @@ spring:
       generate-ddl: true
    data:
       elasticsearch:
-         cluster-name: Java-Techie
+         cluster-name: nCentrala
          cluster-nodes: localhost:9300
          properties:
             http:
