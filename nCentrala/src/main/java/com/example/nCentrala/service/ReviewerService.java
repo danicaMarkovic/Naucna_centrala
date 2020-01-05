@@ -6,6 +6,5 @@ public interface ReviewerService {
 
 	public Iterable<ReviewerIndex> findAll();
 	public boolean addReviewer(ReviewerIndex article);
-	public boolean updateReviewer(ReviewerIndex article);
 	
 }

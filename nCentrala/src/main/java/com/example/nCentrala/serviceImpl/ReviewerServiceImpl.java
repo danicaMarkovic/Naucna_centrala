@@ -32,10 +32,4 @@ public class ReviewerServiceImpl implements ReviewerService {
 		}
 	}
 
-	@Override
-	public boolean updateReviewer(ReviewerIndex article) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }
