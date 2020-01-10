@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.example.nCentrala.model.dto.UserDTO;
+
 @Entity
 public class User implements Serializable {
 	
@@ -26,6 +28,9 @@ public class User implements Serializable {
 	private String email;
 	
 	@Column(nullable = false)
+	private String username;
+	
+	@Column(nullable = false)
 	private String password;
 	
 	@Column(nullable = false)
@@ -38,15 +43,30 @@ public class User implements Serializable {
 		
 	}
 	
-	public User(Long id, String name, String surname, String email, String password, String city, String state) {
+	public User(Long id, String name, String surname, String email, String username, String password, String city,
+			String state) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
+		this.username = username;
 		this.password = password;
 		this.city = city;
 		this.state = state;
+	}
+
+
+	public User(UserDTO user)
+	{
+		this.name = user.getName();
+		this.surname = user.getSurname();
+		this.email = user.getEmail();
+		this.state = user.getState();
+		this.password = user.getPassword();
+		this.state = user.getState();
+		this.city = user.getCity();
+		this.username = user.getUsername();
 	}
 
 	public Long getId() {
@@ -103,6 +123,14 @@ public class User implements Serializable {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	

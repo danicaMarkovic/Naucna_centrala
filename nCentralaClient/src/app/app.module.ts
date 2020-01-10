@@ -1,15 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HomepageTextComponent } from './homepage-text/homepage-text.component';
 import { HomepageGalleryComponent } from './homepage-gallery/homepage-gallery.component';
 import { HomepageTablesComponent } from './homepage-tables/homepage-tables.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HomepageComponent } from './homepage/homepage.component';
 
 const appRoutes : Routes = [
-          
+          {path : '', component : HomepageComponent},
+          {path : "registration", component : RegistrationComponent}
 ];
 
 @NgModule({
@@ -17,11 +20,19 @@ const appRoutes : Routes = [
     AppComponent,
     HomepageTextComponent,
     HomepageGalleryComponent,
-    HomepageTablesComponent
+    HomepageTablesComponent,
+    RegistrationComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(
+      appRoutes,
+      {enableTracing : true}
+    ),
   ],
   providers: [],
   bootstrap: [AppComponent]
