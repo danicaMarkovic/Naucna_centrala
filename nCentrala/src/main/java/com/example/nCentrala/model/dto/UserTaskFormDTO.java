@@ -3,7 +3,7 @@ package com.example.nCentrala.model.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class RegistrationFormDTO implements Serializable{
+public class UserTaskFormDTO implements Serializable{
 
 	private String taskId;
 	
@@ -11,9 +11,9 @@ public class RegistrationFormDTO implements Serializable{
 	
 	private List<FormSubmissionDTO> formFields;
 	
-	public RegistrationFormDTO() {}
+	public UserTaskFormDTO() {}
 
-	public RegistrationFormDTO(String taskId, String processId, List<FormSubmissionDTO> formFields) {
+	public UserTaskFormDTO(String taskId, String processId, List<FormSubmissionDTO> formFields) {
 		super();
 		this.taskId = taskId;
 		this.processId = processId;

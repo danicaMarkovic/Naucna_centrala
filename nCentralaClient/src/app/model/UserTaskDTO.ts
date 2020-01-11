@@ -1,4 +1,4 @@
-export class RegistrationDTO {
+export class UserTaskDTO {
 
     taskId : String;
 	processId : String;

@@ -7,7 +7,6 @@ spring:
       username: root
       password: sifra
       initialization-mode: always
-  
    jpa:
       show-sql: true
       hiberanate: 

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0oedb5x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.4.1">
+  <bpmn:process id="NewJournal" name="New journal" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_1bk5ndk</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1bk5ndk" sourceRef="StartEvent_1" targetRef="Task_0a25ctx" />
+    <bpmn:sequenceFlow id="SequenceFlow_1oozf6k" sourceRef="Task_0a25ctx" targetRef="Task_1p5kzty" />
+    <bpmn:endEvent id="EndEvent_10j7h5d">
+      <bpmn:incoming>SequenceFlow_0lkbizn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0lkbizn" sourceRef="Task_1p5kzty" targetRef="EndEvent_10j7h5d" />
+    <bpmn:userTask id="Task_0a25ctx" name="New journal">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="name" label="Journal name" type="string" />
+          <camunda:formField id="issn" label="Journal issn" type="string" />
+          <camunda:formField id="openAccess" label="Open access" type="boolean" />
+          <camunda:formField id="scienceArea" label="Science areas" type="enum">
+            <camunda:value id="drustvene_nauke" name="Drustvene nauke" />
+            <camunda:value id="prirodne_nauke" name="Prirodne nauke" />
+            <camunda:value id="medicina" name="Medicina" />
+            <camunda:value id="tehnoloske_nauke" name="Tehnoloske nauke" />
+          </camunda:formField>
+          <camunda:formField id="paymentMethod" label="Payment methods" type="enum">
+            <camunda:value id="bitcoin" name="Bitcoin" />
+            <camunda:value id="paypal" name="PayPal" />
+            <camunda:value id="card" name="Card" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1bk5ndk</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1oozf6k</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_1p5kzty" name="Save journal" camunda:class="com.example.nCentrala.delegate.SaveJournalDelegate">
+      <bpmn:incoming>SequenceFlow_1oozf6k</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0lkbizn</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="NewJournal">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1bk5ndk_di" bpmnElement="SequenceFlow_1bk5ndk">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1oozf6k_di" bpmnElement="SequenceFlow_1oozf6k">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_10j7h5d_di" bpmnElement="EndEvent_10j7h5d">
+        <dc:Bounds x="592" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0lkbizn_di" bpmnElement="SequenceFlow_0lkbizn">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="592" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1h5v68l_di" bpmnElement="Task_0a25ctx">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1ebsc1n_di" bpmnElement="Task_1p5kzty">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

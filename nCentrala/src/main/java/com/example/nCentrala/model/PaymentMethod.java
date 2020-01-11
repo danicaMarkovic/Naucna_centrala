@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class PayingMethod implements Serializable {
+public class PaymentMethod {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,9 @@ public class PayingMethod implements Serializable {
 	@Column(nullable = false)
 	private String name;
 	
-	public PayingMethod() {}
+	public PaymentMethod() {}
 
-	public PayingMethod(Long id, String name) {
+	public PaymentMethod(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

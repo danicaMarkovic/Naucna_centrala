@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class ScienceArea implements Serializable{
+public class ScienceArea {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,9 @@ public class ScienceArea implements Serializable{
 	@Column(nullable = false)
 	private String name;
 	
-	@OneToMany(mappedBy="scienceArea")
-	private Set<Article> articles = new HashSet<Article>();
+	
+//	@OneToMany(mappedBy="scienceArea")
+//	private Set<Article> articles = new HashSet<Article>();
 	
 	public ScienceArea() {}
 
@@ -48,13 +49,5 @@ public class ScienceArea implements Serializable{
 		this.name = name;
 	}
 
-	public Set<Article> getArticles() {
-		return articles;
-	}
-
-	public void setArticles(Set<Article> articles) {
-		this.articles = articles;
-	}
-	
 	
 }

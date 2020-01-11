@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.example.nCentrala.model.dto.FormSubmissionDTO;
-import com.example.nCentrala.model.dto.RegistrationFormDTO;
+import com.example.nCentrala.model.dto.UserTaskFormDTO;
 
 @Service
 public class EmailForRegistrationDelegate implements JavaDelegate {
@@ -25,7 +25,7 @@ public class EmailForRegistrationDelegate implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		RegistrationFormDTO regDto = (RegistrationFormDTO) execution.getVariable("registrationForm");
+		UserTaskFormDTO regDto = (UserTaskFormDTO) execution.getVariable("registrationForm");
 		
 		List<FormSubmissionDTO> formFields = regDto.getFormFields();
 		String email = "";
@@ -49,7 +49,7 @@ public class EmailForRegistrationDelegate implements JavaDelegate {
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Registration confirmation");
 		mail.setText("Welcome " + username + ",\n Thank you for using Nc app!"
-				+ "Your account is ready for use. " + "\n Nc team.");
+				+ "To activate your account, click on:  "+"http://localhost:1337/activate" + "\n Nc team.");
 		
 		javaMailSender.send(mail);
 		

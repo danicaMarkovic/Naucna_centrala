@@ -7,7 +7,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_19jta0j" sourceRef="StartEvent_1" targetRef="Task_1vyrks1" />
     <bpmn:sequenceFlow id="SequenceFlow_01vfidt" sourceRef="Task_1vyrks1" targetRef="Task_1p7jkiy" />
     <bpmn:endEvent id="EndEvent_0n5nkez">
-      <bpmn:incoming>SequenceFlow_057sf7s</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0gpsq28</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1dqs1hp" sourceRef="Task_1p7jkiy" targetRef="ExclusiveGateway_1ilwm8x" />
     <bpmn:userTask id="Task_1vyrks1" name="Registration info">
@@ -22,6 +22,12 @@
           <camunda:formField id="password" label="Enter password" type="string" />
           <camunda:formField id="password2" label="Repeat password" type="string" />
           <camunda:formField id="reviewer" label="Reviewer" type="boolean" />
+          <camunda:formField id="areas" label="Areas of interest" type="enum">
+            <camunda:value id="drustvene_nauke" name="Drustvene nauke" />
+            <camunda:value id="prirodne_nauke" name="Prirodne nauke" />
+            <camunda:value id="medicina" name="Medicina" />
+            <camunda:value id="tehnoloske_nauke" name="Tehnoloske nauke" />
+          </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_19jta0j</bpmn:incoming>
@@ -39,7 +45,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_1ohl9b2" name="Valid" sourceRef="ExclusiveGateway_1ilwm8x" targetRef="SendEmail">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valid == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_057sf7s" sourceRef="SendEmail" targetRef="EndEvent_0n5nkez" />
+    <bpmn:sequenceFlow id="SequenceFlow_057sf7s" sourceRef="SendEmail" targetRef="emailConfirmation" />
     <bpmn:serviceTask id="SendEmail" name="Send email" camunda:class="com.example.nCentrala.delegate.EmailForRegistrationDelegate">
       <bpmn:incoming>SequenceFlow_1ohl9b2</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_057sf7s</bpmn:outgoing>
@@ -50,6 +56,21 @@
     <bpmn:sequenceFlow id="SequenceFlow_1u54kpf" name="Invalid" sourceRef="ExclusiveGateway_1ilwm8x" targetRef="EndEvent_1htvzbr">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valid == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_1slr8r3" sourceRef="emailConfirmation" targetRef="Task_1eoukxa" />
+    <bpmn:userTask id="emailConfirmation" name="Confirm registration">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="emailConfirmation" label="Email" type="string" defaultValue="${email}" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_057sf7s</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1slr8r3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0gpsq28" sourceRef="Task_1eoukxa" targetRef="EndEvent_0n5nkez" />
+    <bpmn:serviceTask id="Task_1eoukxa" name="Activate user" camunda:class="com.example.nCentrala.delegate.ActivateUserAfterEmailDelegate">
+      <bpmn:incoming>SequenceFlow_1slr8r3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0gpsq28</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="NewRegistration">
@@ -65,7 +86,7 @@
         <di:waypoint x="420" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_0n5nkez_di" bpmnElement="EndEvent_0n5nkez">
-        <dc:Bounds x="802" y="99" width="36" height="36" />
+        <dc:Bounds x="1092" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1dqs1hp_di" bpmnElement="SequenceFlow_1dqs1hp">
         <di:waypoint x="520" y="117" />
@@ -92,7 +113,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_057sf7s_di" bpmnElement="SequenceFlow_057sf7s">
         <di:waypoint x="770" y="117" />
-        <di:waypoint x="802" y="117" />
+        <di:waypoint x="810" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_1x7qo8s_di" bpmnElement="SendEmail">
         <dc:Bounds x="670" y="77" width="100" height="80" />
@@ -107,6 +128,20 @@
           <dc:Bounds x="594" y="173" width="32" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1slr8r3_di" bpmnElement="SequenceFlow_1slr8r3">
+        <di:waypoint x="910" y="117" />
+        <di:waypoint x="960" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_190h2jz_di" bpmnElement="emailConfirmation">
+        <dc:Bounds x="810" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0gpsq28_di" bpmnElement="SequenceFlow_0gpsq28">
+        <di:waypoint x="1060" y="117" />
+        <di:waypoint x="1092" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1kj40xr_di" bpmnElement="Task_1eoukxa">
+        <dc:Bounds x="960" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

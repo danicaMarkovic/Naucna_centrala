@@ -9,10 +9,14 @@ import { RegistrationComponent } from './registration/registration.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomepageComponent } from './homepage/homepage.component';
+import { NewJournalComponent } from './new-journal/new-journal.component';
+import { ActivateUserAccountComponent } from './activate-user-account/activate-user-account.component';
 
 const appRoutes : Routes = [
           {path : '', component : HomepageComponent},
-          {path : "registration", component : RegistrationComponent}
+          {path : "registration", component : RegistrationComponent},
+          {path : 'journal', component : NewJournalComponent},
+          {path : 'activate', component : ActivateUserAccountComponent}
 ];
 
 @NgModule({
@@ -22,7 +26,9 @@ const appRoutes : Routes = [
     HomepageGalleryComponent,
     HomepageTablesComponent,
     RegistrationComponent,
-    HomepageComponent
+    HomepageComponent,
+    NewJournalComponent,
+    ActivateUserAccountComponent
   ],
   imports: [
     BrowserModule,

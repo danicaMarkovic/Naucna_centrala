@@ -1,9 +1,14 @@
 package com.example.nCentrala.model.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.example.nCentrala.model.ScienceArea;
 
 public class UserDTO {
 
@@ -28,11 +33,15 @@ public class UserDTO {
 	
 	private String username;
 	
+	private Set<ScienceArea> areas = new HashSet<>();
+	
 	public UserDTO() {}
+	
 
-	public UserDTO(String name, String surname, String email, String password, String city, String state,
-			String password2, boolean reviewer, String username) {
+	public UserDTO(Long id, String name, String surname, String email, String password, String city, String state,
+			String password2, boolean reviewer, String username, Set<ScienceArea> areas) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
@@ -42,7 +51,9 @@ public class UserDTO {
 		this.password2 = password2;
 		this.reviewer = reviewer;
 		this.username = username;
+		this.areas = areas;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -122,6 +133,14 @@ public class UserDTO {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public Set<ScienceArea> getAreas() {
+		return areas;
+	}
+
+	public void setAreas(Set<ScienceArea> areas) {
+		this.areas = areas;
 	}
 	
 	

@@ -1,15 +1,20 @@
 package com.example.nCentrala.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.example.nCentrala.model.dto.UserDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class User implements Serializable {
@@ -39,12 +44,21 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private String state;
 	
+	@Column(nullable = false)
+	private boolean isActivated;
+	
+	@Column
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonBackReference
+	private Set<ScienceArea> areasOfInterest =  new HashSet<ScienceArea>();
+	
 	public User() {
 		
 	}
 	
+
 	public User(Long id, String name, String surname, String email, String username, String password, String city,
-			String state) {
+			String state, boolean isActivated, Set<ScienceArea> areasOfInterest) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -54,6 +68,8 @@ public class User implements Serializable {
 		this.password = password;
 		this.city = city;
 		this.state = state;
+		this.isActivated = isActivated;
+		this.areasOfInterest = areasOfInterest;
 	}
 
 
@@ -67,6 +83,7 @@ public class User implements Serializable {
 		this.state = user.getState();
 		this.city = user.getCity();
 		this.username = user.getUsername();
+		this.areasOfInterest = user.getAreas();
 	}
 
 	public Long getId() {
@@ -133,5 +150,22 @@ public class User implements Serializable {
 		this.username = username;
 	}
 	
+	public boolean isActivated() {
+		return isActivated;
+	}
+
+
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
+
+	public Set<ScienceArea> getAreasOfInterest() {
+		return areasOfInterest;
+	}
+
+	public void setAreasOfInterest(Set<ScienceArea> areasOfInterest) {
+		this.areasOfInterest = areasOfInterest;
+	}
 	
 }

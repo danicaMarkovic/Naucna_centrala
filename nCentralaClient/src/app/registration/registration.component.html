@@ -90,6 +90,11 @@
                                 <input type="checkbox" class="form-control" name="{{field.id}}" ngModel placeholder="{{field.label}}" *ngIf="field.type.name=='boolean'">
                                 <input type="number" class="form-control" name="{{field.id}}" ngModel placeholder="{{field.label}}" *ngIf="field.type.name=='long'">
                                 <input type="password" class="form-control" name="{{field.id}}" ngModel placeholder="{{field.label}}" *ngIf="field.id == 'password' || field.id == 'password2'">
+                                <select multiple name="{{field.id}}" class="form-control" ngModel *ngIf="field.type.name=='enum'">
+                                    <option *ngFor="let val of enumValues" value={{val}}>
+                                      {{field.type.values[val]}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <input type="submit" value="Register" class="btn btn-primary">

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.nCentrala.converter.RegistrationFiledsToUserConverter;
 import com.example.nCentrala.model.dto.FormFieldsDTO;
-import com.example.nCentrala.model.dto.RegistrationFormDTO;
+import com.example.nCentrala.model.dto.UserTaskFormDTO;
 import com.example.nCentrala.model.dto.UserDTO;
 import com.example.nCentrala.service.UserService;
 
@@ -39,7 +39,7 @@ public class RegistrationDelegate implements JavaDelegate {
 		//runtimeService = execution.getProcessEngine().getRuntimeService();
 		//User userWithEmail = identityService.createUserQuery().userEmail(execution.getVariable("email").toString()).singleResult();
 		
-		RegistrationFormDTO regDto = (RegistrationFormDTO) execution.getVariable("registrationForm");
+		UserTaskFormDTO regDto = (UserTaskFormDTO) execution.getVariable("registrationForm");
 		System.out.println("niiiiz: " + regDto.getFormFields().size());
 		
 		UserDTO user = converter.convert(regDto.getFormFields());
@@ -49,7 +49,7 @@ public class RegistrationDelegate implements JavaDelegate {
 		if(u== null && validateRegistrationData(user))
 		{
 			com.example.nCentrala.model.User userData = new com.example.nCentrala.model.User(user); //fali dodela uloge, kad proradi dodati
-			//fali i slanje email-a
+			userData.setActivated(false);
 			userService.saveUser(userData);
 			
 			execution.setVariable("valid", true);
