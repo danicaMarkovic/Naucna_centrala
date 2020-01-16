@@ -82,7 +82,7 @@ public class JournalFormToJournalConverter implements Converter<List<FormSubmiss
 		{
 			ret.add(areaService.getByName(area));
 		}
-		
+		System.out.println("Areas.size()= " + ret.size());
 		return ret;
 	}
 	
@@ -93,11 +93,10 @@ public class JournalFormToJournalConverter implements Converter<List<FormSubmiss
 		
 		for(String method : methods)
 		{
-			System.out.println("A");
 			ret.add(paymentService.getByName(method));
 		}
 		
-		System.out.println("ret.size()= " + ret.size());
+		
 		
 		return ret;
 		

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistrationService } from '../services/registration/registration.service';
 import { UserTaskDTO } from '../model/UserTaskDTO';
+import { CamundaService } from '../services/camunda/camunda.service';
 
 @Component({
   selector: 'app-registration',
@@ -15,14 +15,15 @@ export class RegistrationComponent implements OnInit {
   private enumValues = [];
   private regDTO : UserTaskDTO = new UserTaskDTO();
 
-  constructor(private regService : RegistrationService) {
+  constructor(private camundaService : CamundaService) {
     
-    let x = regService.startProcess();
+
+    let x = camundaService.startRegistrationProcess();
 
     x.subscribe(
       res => {
-        console.log(res);
-        //this.categories = res;
+        
+       
         this.formFieldsDto = res;
         this.formFields = res.formFields;
         this.processInstance = res.processInstanceId;
@@ -52,9 +53,6 @@ export class RegistrationComponent implements OnInit {
 
     for (var property in value) {
      
-      //console.log("Property: " + property); //id
-      //console.log("Value: " + value[property]); //unesena vrednost
-
       if(property == 'areas')
       {
         formFields.push({fieldId : property, areas : value[property]});
@@ -66,10 +64,7 @@ export class RegistrationComponent implements OnInit {
 
     this.regDTO.formFields = formFields;
 
-    //console.log("taskID: " + this.regDTO.taskId);
-    //console.log("pID: " + this.regDTO.processId);
-    //console.log("niz: " + this.regDTO.formFields.length);
-    this.regService.finishProcess(this.regDTO).subscribe(data=>{
+    this.camundaService.finishRegistrationProcess(this.regDTO).subscribe(data=>{
       alert("Registration done! Check email to activate your account!")
     },err =>{
       alert("Error!!!");

@@ -1,14 +1,17 @@
 package com.example.nCentrala.model.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import com.example.nCentrala.model.Role;
 import com.example.nCentrala.model.ScienceArea;
+import com.example.nCentrala.model.User;
 
 public class UserDTO {
 
@@ -35,11 +38,12 @@ public class UserDTO {
 	
 	private Set<ScienceArea> areas = new HashSet<>();
 	
+	private List<Role> roles = new ArrayList<Role>();
+	
 	public UserDTO() {}
 	
-
 	public UserDTO(Long id, String name, String surname, String email, String password, String city, String state,
-			String password2, boolean reviewer, String username, Set<ScienceArea> areas) {
+			String password2, boolean reviewer, String username, Set<ScienceArea> areas, List<Role> roles) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -52,6 +56,24 @@ public class UserDTO {
 		this.reviewer = reviewer;
 		this.username = username;
 		this.areas = areas;
+		this.roles = roles;
+	}
+
+	public UserDTO(User user) {
+		this.id = user.getId();
+		this.name = user.getName();
+		this.surname = user.getSurname();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.city = user.getCity();
+		this.state = user.getState();
+		this.password2 = user.getPassword();
+		this.username = user.getUsername();
+		
+		for(Role r : user.getRoles())
+		{
+			this.roles.add(r);
+		}
 	}
 
 
@@ -141,6 +163,14 @@ public class UserDTO {
 
 	public void setAreas(Set<ScienceArea> areas) {
 		this.areas = areas;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 	
 	

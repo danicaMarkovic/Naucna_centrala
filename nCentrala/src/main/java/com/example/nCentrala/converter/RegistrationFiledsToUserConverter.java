@@ -24,15 +24,12 @@ public class RegistrationFiledsToUserConverter implements Converter<List<FormSub
 	@Override
 	public UserDTO convert(List<FormSubmissionDTO> source) {
 		// TODO Auto-generated method stub
-		System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
 		if (source == null)
 		{
-			System.out.println("Ovo je nuuuulll");
 			return null;
 		}else
 		{
 			UserDTO user = new UserDTO();
-			System.out.println("Nije null");
 			for(FormSubmissionDTO field : source)
 			{
 				if(field.getFieldId().equals("name"))

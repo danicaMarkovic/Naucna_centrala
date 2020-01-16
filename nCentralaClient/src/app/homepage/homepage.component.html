@@ -67,11 +67,15 @@
                                 <a href="#banner">Home</a>
                             </li>
                             <li>
-                                <a href="/registration">Register</a>
+                                <a href="/registration" *ngIf="isLoggedIn == false">Register</a>
                             </li>
                             <li>
-                                <a href="/journal">Journal</a>
+                                <a href="/login" *ngIf="isLoggedIn == false">Login</a>
                             </li>
+                            <li>
+                                <a [routerLink]="" (click)="logout()" *ngIf="isLoggedIn == true">Logout</a>
+                            </li>
+
                         </ul>
                     </nav>
                     <!--End of Main Navigation-->
@@ -94,7 +98,10 @@
                 </div>
   
                 <!--Call to Action-->
-                <a href="#" class="button">Button</a>
+                
+                <h2 *ngIf="editorLoggedIn == true">Start NewJournal process</h2>
+                <a *ngIf="editorLoggedIn == true" [routerLink]="" (click)="startJournalProcess()" class="button">Start</a>
+                
                 <!--End Call to Action-->
   
             </div>
@@ -105,8 +112,51 @@
     <!--Main Content Area-->
     <main id="content">
   
-        <app-homepage-text></app-homepage-text>
+       <!-- <app-homepage-text></app-homepage-text> -->
   
+            <!--Introduction-->
+        <section id="about" class="introduction scrollto" *ngIf="isLoggedIn == true">
+
+            <div class="row clearfix">
+
+                <div class="col-3">
+                    <div class="section-heading">
+                        <h3>User {{user.username}} tasklist</h3>
+                    <!----> <h2 class="section-title">User</h2>
+                        <p class="section-subtitle">{{user.name}} {{user.surname}}</p>
+                        <p class="section-subtitle">Roles: {{roles}}</p>
+                    </div>
+
+                </div>
+
+                <div class="col-2-3">
+
+                    <div class="container"  style="text-align:center;">
+                        <table class="tg">
+                            <colgroup>
+                            <col style="width: 234px">
+                            <col style="width: 313px">
+                            <col style="width: 341px">
+                            </colgroup>
+                            <tr>
+                                <th class="tg-9cs8">Task Name</th>
+                                <th class="tg-9cs8">Complete</th>
+                            </tr>
+                            <tr *ngFor="let task of taskDtos" >
+                                <td class="tg-oe15">{{task.name}}</td>
+                                <td class="tg-oe15"><button type="button" class="complete" (click)="completeTask(task.taskId)">Complete</button></td>
+                            </tr>
+                            </table>
+                    </div>
+                
+                    
+                </div>
+
+            </div>
+
+
+        </section>
+        <!--End of Introduction-->
   
         <app-homepage-gallery></app-homepage-gallery>
   

@@ -3,7 +3,7 @@ spring:
       name: nCentrala
    datasource:
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/NC?useSSL=false&createDatabaseIfNotExist=true#&nullCatalogMeansCurrent=true
+      url: jdbc:mysql://localhost:3306/NC?useSSL=false&createDatabaseIfNotExist=true&nullCatalogMeansCurrent=true
       username: root
       password: sifra
       initialization-mode: always

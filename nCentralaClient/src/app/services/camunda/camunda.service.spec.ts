@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { JournalService } from './journal.service';
+import { CamundaService } from './camunda.service';
 
-describe('JournalService', () => {
+describe('CamundaService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: JournalService = TestBed.get(JournalService);
+    const service: CamundaService = TestBed.get(CamundaService);
     expect(service).toBeTruthy();
   });
 });

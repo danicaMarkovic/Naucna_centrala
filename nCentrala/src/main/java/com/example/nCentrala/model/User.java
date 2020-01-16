@@ -5,19 +5,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NaturalId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.nCentrala.model.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class User implements Serializable {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+    name="discriminator",
+    discriminatorType=DiscriminatorType.STRING
+)
+@DiscriminatorValue(value="U")
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +44,12 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private String surname;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 60)
+	@NaturalId
 	private String email;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 60)
+	@NaturalId
 	private String username;
 	
 	@Column(nullable = false)
@@ -52,15 +69,19 @@ public class User implements Serializable {
 	@JsonBackReference
 	private Set<ScienceArea> areasOfInterest =  new HashSet<ScienceArea>();
 	
+	@Column
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonBackReference
+	private Set<Role> roles = new HashSet<Role>();
+	
+	
 	public User() {
 		
 	}
 	
-
-	public User(Long id, String name, String surname, String email, String username, String password, String city,
-			String state, boolean isActivated, Set<ScienceArea> areasOfInterest) {
+	public User(String name, String surname, String email, String username, String password, String city,
+			String state, boolean isActivated, Set<ScienceArea> areasOfInterest, Set<Role> roles) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
@@ -70,6 +91,7 @@ public class User implements Serializable {
 		this.state = state;
 		this.isActivated = isActivated;
 		this.areasOfInterest = areasOfInterest;
+		this.roles = roles;
 	}
 
 
@@ -166,6 +188,14 @@ public class User implements Serializable {
 
 	public void setAreasOfInterest(Set<ScienceArea> areasOfInterest) {
 		this.areasOfInterest = areasOfInterest;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,33 +39,6 @@ public class JournalController {
 	@Autowired
 	private FormService formService;
 	
-	@RequestMapping(
-			value="finish",
-			method = RequestMethod.POST,
-			produces = "application/json",
-			consumes = "application/json")
-	public ResponseEntity<?> finishProcess(@RequestBody UserTaskFormDTO taskDto){
-		System.out.println("Usao");
-		Task task = taskService.createTaskQuery().taskId(taskDto.getTaskId()).singleResult();
-		
-		HashMap<String, Object> map = mapListToDto(taskDto.getFormFields());
-		
-		System.out.println("taskID: " + taskDto.getTaskId() + "prosID: " + taskDto.getProcessId() + "niz: "+taskDto.getFormFields().size());
-		
-		runtimeService.setVariable(task.getProcessInstanceId(), "newJournalForm", taskDto);
-		formService.submitTaskForm(taskDto.getTaskId(), map);
-		
-		return new ResponseEntity<> (HttpStatus.OK);
-	}
 	
-	private HashMap<String, Object> mapListToDto(List<FormSubmissionDTO> list)
-	{
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		for(FormSubmissionDTO temp : list){
-			map.put(temp.getFieldId(), temp.getFieldValue());
-		}
-		
-		return map;
-	}
 	
 }

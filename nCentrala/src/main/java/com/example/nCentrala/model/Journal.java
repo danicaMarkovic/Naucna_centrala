@@ -15,6 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.NaturalId;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -28,7 +31,8 @@ public class Journal implements Serializable {
 	@Column(nullable = false)
 	private String name;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 60)
+	@NaturalId
 	private String issn;
 	
 	@Column(nullable = false)
@@ -47,10 +51,16 @@ public class Journal implements Serializable {
 	@JsonBackReference
 	private Set<PaymentMethod> paymentMethods = new HashSet<PaymentMethod>(); 
 	
+	@OneToOne
+	private Editor mainEditor;
+	
+	@OneToMany(mappedBy="journal",fetch = FetchType.LAZY,orphanRemoval = true)
+	private Set<Editor> editors = new HashSet<Editor>();
+	
 	public Journal() {}
 	
 	public Journal(Long id, String name, String issn, boolean isOpenAccess, boolean isActivated,
-			Set<ScienceArea> scienceAreas, Set<PaymentMethod> paymentMethods) {
+			Set<ScienceArea> scienceAreas, Set<PaymentMethod> paymentMethods, Editor mainEditor, Set<Editor> editors) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -59,9 +69,9 @@ public class Journal implements Serializable {
 		this.isActivated = isActivated;
 		this.scienceAreas = scienceAreas;
 		this.paymentMethods = paymentMethods;
+		this.mainEditor = mainEditor;
+		this.editors = editors;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -117,6 +127,22 @@ public class Journal implements Serializable {
 
 	public void setPaymentMethods(Set<PaymentMethod> paymentMethods) {
 		this.paymentMethods = paymentMethods;
+	}
+
+	public Editor getMainEditor() {
+		return mainEditor;
+	}
+
+	public void setMainEditor(Editor mainEditor) {
+		this.mainEditor = mainEditor;
+	}
+
+	public Set<Editor> getEditors() {
+		return editors;
+	}
+
+	public void setEditors(Set<Editor> editors) {
+		this.editors = editors;
 	}
 	
 }

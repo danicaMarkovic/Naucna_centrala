@@ -19,4 +19,23 @@ public class JournalServiceImpl implements JournalService {
 		return journalRepository.save(journal);
 	}
 
+	@Override
+	public Journal getLastAddedJournal() {
+		// TODO Auto-generated method stub
+		return journalRepository.findTopByOrderByIdDesc();
+	}
+
+	@Override
+	public Journal getJournalByIssn(String issn) {
+		// TODO Auto-generated method stub
+		System.out.println("velicina " + journalRepository.findByIssn(issn).getName());
+		return journalRepository.findByIssn(issn);
+	}
+
+	@Override
+	public void deleteJournal(Journal journal) {
+		// TODO Auto-generated method stub
+		journalRepository.delete(journal);
+	}
+
 }

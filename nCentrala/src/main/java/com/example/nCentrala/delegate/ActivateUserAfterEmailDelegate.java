@@ -28,7 +28,7 @@ public class ActivateUserAfterEmailDelegate implements JavaDelegate {
 		
 		UserDTO userInfo = converter.convert(regDto.getFormFields());
 		
-		User user = userService.findUserByUsername(userInfo.getUsername());
+		User user = userService.findUserByUsername(userInfo.getUsername()).get();
 		
 		user.setActivated(true);
 		

@@ -49,7 +49,7 @@ public class EmailForRegistrationDelegate implements JavaDelegate {
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Registration confirmation");
 		mail.setText("Welcome " + username + ",\n Thank you for using Nc app!"
-				+ "To activate your account, click on:  "+"http://localhost:1337/activate" + "\n Nc team.");
+				+ "To activate your account, click on:  "+"http://localhost:1337/activate/" + regDto.getProcessId() + "\n Nc team.");
 		
 		javaMailSender.send(mail);
 		
