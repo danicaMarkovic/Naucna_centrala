@@ -33,6 +33,8 @@ public class SaveDataAfterAdminConfirmationDelegate implements JavaDelegate {
 		boolean adminConfirmation = (boolean) execution.getVariable("confirmation");
 		String username = (String) execution.getVariable("username");
 		
+		System.out.println("Username: " + username);
+		
 		if(adminConfirmation == true)
 		{
 			User user = userService.findUserByUsername(username).get();
@@ -47,6 +49,8 @@ public class SaveDataAfterAdminConfirmationDelegate implements JavaDelegate {
 					user.getPassword(), user.getCity(), user.getState(), user.isActivated(), user.getAreasOfInterest(), roles, "Reviewer", true, null);
 			
 			userService.deleteUser(user); //brisanje podataka o korisniku kao User-u
+			
+			
 			userService.saveUser(reviewer); //cuvanje info o korisniku kao Recenzentu
 			
 		}

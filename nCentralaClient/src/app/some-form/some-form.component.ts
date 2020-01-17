@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UniversalService } from '../services/universal/universal.service';
 import { UserTaskDTO } from '../model/UserTaskDTO';
 import { UserService } from '../services/user/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-some-form',
@@ -21,6 +22,7 @@ export class SomeFormComponent implements OnInit {
   private journalDTO : UserTaskDTO = new UserTaskDTO();
   private editors = [];
   private reviewers = [];
+  private readOnlyFields = true;
 
   constructor(private camundaService : CamundaService, private router : ActivatedRoute, 
               private uniService : UniversalService,  private userS : UserService) { 
@@ -40,6 +42,11 @@ export class SomeFormComponent implements OnInit {
       this.userS.getUserByRole("editor").subscribe(res =>{
         this.editors = res;
       });
+    }else if(this.taskName == 'Check data')
+    {
+      (<any>document.getElementById("name")).readOnly = true;
+      (<HTMLInputElement>document.getElementById("issn")).readOnly = true;
+      (<HTMLInputElement>document.getElementById("openAccess")).readOnly = true;
     }
 
     if(this.taskName == 'Choose reviewers' )
@@ -78,9 +85,27 @@ export class SomeFormComponent implements OnInit {
     let retRew = "";
     let countRew = 0;
     let retEditors = "";
+    let countEd = 0;
 
     for (var property in value) {
      
+      if(property == 'name' && this.isBlank(value[property]))
+      {
+        alert('Enter name!')
+      
+      }else if(property == 'issn' && this.isBlank(value[property]))
+      {
+        alert('Enter issn!');
+      }
+      if(property == 'scienceArea' && value[property].length == 0)
+      {
+        alert("Choose science area!");
+
+      }else if(property == 'paymentMethod' && value[property].length == 0)
+      {
+        alert("Choose payment method!");
+      }
+
       if(property == 'paymentMethod')
       {
 
@@ -93,21 +118,31 @@ export class SomeFormComponent implements OnInit {
 
       }else if(property == 'reviewers')
       {
-        value[property].forEach(element => {
-          retRew = value[property] + ",";
-          countRew++;
-        });
-
-        formFields.push({fieldId : property, fieldValue : 	retRew.substring(0, retRew.length - 1)});
+        if(value[property].length  < 2)
+        {
+          alert("You must choose min 2 reviewers");
+        }else
+        {
+          value[property].forEach(element => {
+            retRew = value[property] + ",";
+            countRew++;
+          });
+          formFields.push({fieldId : property, fieldValue : 	retRew.substring(0, retRew.length - 1)});
+        }
 
       }else if(property == 'editors')
       {
-        value[property].forEach(element => {
-          retEditors = value[property] + ",";
-          countRew++;
-        });
-
-        formFields.push({fieldId : property, fieldValue : 	retEditors.substring(0, retEditors.length - 1)});
+        if(value[property].length == 0)
+        {
+          alert("You must choose editor!");
+        }else
+        {
+          value[property].forEach(element => {
+            retEditors = value[property] + ",";
+            countEd++;
+          });
+          formFields.push({fieldId : property, fieldValue : 	retEditors.substring(0, retEditors.length - 1)});
+        }
 
       }
       else
@@ -126,18 +161,41 @@ export class SomeFormComponent implements OnInit {
       alert("Task " + this.taskName + " done.");
       window.location.href = "http://localhost:1337";
      },  err => {
-      alert("Error while completing task " + this.taskName);
+       this.handleAuthError(err);
      });
     }else
     {
-      this.camundaService.finishTaskById(this.taskId,formFields).subscribe(res =>{
+
+      if(this.taskName == 'Choose reviewers' && countRew < 2) 
+      {
+        alert("Minimum 2 reviewer must be choosen");
+
+      }else if(this.taskName == 'Choose editors' && countEd == 0)
+      {
+        alert("Editor must be choosen");
+      }else
+      {
+        this.camundaService.finishTaskById(this.taskId,formFields).subscribe(res =>{
       
-        alert("Task " + this.taskName + " done.");
-        window.location.href = "http://localhost:1337";
-      }, err =>{
-        alert("Error while completing task " + this.taskName);
-      });
+          alert("Task " + this.taskName + " done.");
+          window.location.href = "http://localhost:1337";
+        }, err =>{
+          alert("Error while completing task " + this.taskName);
+        });
+      }
     }
+  }
+
+  isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+  }
+
+  handleAuthError(err: HttpErrorResponse) {
+  
+    if (err.status === 410) {
+      alert('Error. Fill the fields');
+    }
+    
   }
 
 }

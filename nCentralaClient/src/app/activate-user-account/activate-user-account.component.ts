@@ -61,7 +61,7 @@ export class ActivateUserAccountComponent implements OnInit {
     //this.service.finishTaskW(this.taskId).subscribe(data =>{
       this.camundaService.finishTaskById(this.taskId, formFields).subscribe(data =>{
       alert("Activation done!");
-      window.location.href = "http://localhost:1337/login";
+      window.location.href = "http://localhost:1337";
     },
     err => {
       alert("some error");

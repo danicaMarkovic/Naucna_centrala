@@ -23,14 +23,14 @@
                         <div class="all" *ngFor="let field of formFields">
                             <div class="form-group">
                                 <label for="{{field.id}}">{{field.label}}</label>
-                                <input type="text" class="form-control" name="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='string' && field.id != 'password' && field.id != 'password2'  && field.id != 'editors' && field.id != 'reviewers'">
-                                <input type="checkbox" class="form-control" name="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='boolean'">
-                                <input type="number" class="form-control" name="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='long'">
+                                <input  type="text" class="form-control" name="{{field.id}}" id="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='string' && field.id != 'password' && field.id != 'password2'  && field.id != 'editors' && field.id != 'reviewers'">
+                                <input  type="checkbox" class="form-control" name="{{field.id}}" id="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='boolean'">
+                                <input  type="number" class="form-control" name="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='long'">
                                 <select multiple name="{{field.id}}" *ngIf="field.id == 'scienceArea'"  ngModel class="form-control">
                                     <option *ngFor="let val of areas" value={{val.name}}>
                                             {{val.name}}
                                     </option>
-                                    </select>
+                                </select>
                                 <select multiple name="{{field.id}}" *ngIf="field.id == 'paymentMethod'" ngModel  class="form-control">
                                     <option *ngFor="let val of methods" value={{val.name}}>
                                             {{val.name}}

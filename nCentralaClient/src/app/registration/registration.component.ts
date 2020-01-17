@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserTaskDTO } from '../model/UserTaskDTO';
 import { CamundaService } from '../services/camunda/camunda.service';
+import { UniversalService } from '../services/universal/universal.service';
 
 @Component({
   selector: 'app-registration',
@@ -14,8 +15,10 @@ export class RegistrationComponent implements OnInit {
   private formFieldsDto = null;
   private enumValues = [];
   private regDTO : UserTaskDTO = new UserTaskDTO();
+  private incorectData = 0;
+  private areas = [];
 
-  constructor(private camundaService : CamundaService) {
+  constructor(private camundaService : CamundaService, private uniService : UniversalService) {
     
 
     let x = camundaService.startRegistrationProcess();
@@ -31,15 +34,20 @@ export class RegistrationComponent implements OnInit {
         this.regDTO.taskId = res.taskId;
         this.formFields.forEach( (field) =>{
           
-          if( field.type.name=='enum'){
-            this.enumValues = Object.keys(field.type.values);
-          }
+          // if( field.type.name=='enum'){
+          //   this.enumValues = Object.keys(field.type.values);
+
+          // }
         });
       },
       err => {
         //console.log("Error occured");
       }
     );
+
+    this.uniService.getAllScienceAreas().subscribe(res => {
+      this.areas = res;
+    }); 
 
   }
 
@@ -53,26 +61,51 @@ export class RegistrationComponent implements OnInit {
 
     for (var property in value) {
      
-      if(property == 'areas')
+      if(this.isBlank(value[property]))
       {
-        formFields.push({fieldId : property, areas : value[property]});
-      }else
+        (<HTMLInputElement>document.getElementById("not"+property)).append("You must fill " + property + " field");
+        
+        this.incorectData++;
+      }else if(property == 'email' && !this.validateEmail(value[property]))
       {
-        formFields.push({fieldId : property, fieldValue : value[property]});
+        (<HTMLInputElement>document.getElementById("not"+property)).append("Email must be in form xxxx@yyy.com");
+      }
+      else
+      {
+
+          if(property == 'areas')
+          {
+            formFields.push({fieldId : property, areas : value[property]});
+          }else
+          {
+            formFields.push({fieldId : property, fieldValue : value[property]});
+          }
+
       }
     }
 
-    this.regDTO.formFields = formFields;
+    if(this.incorectData == 0)
+    {
+      this.regDTO.formFields = formFields;
 
-    this.camundaService.finishRegistrationProcess(this.regDTO).subscribe(data=>{
-      alert("Registration done! Check email to activate your account!")
-    },err =>{
-      alert("Error!!!");
-    });
+      this.camundaService.finishRegistrationProcess(this.regDTO).subscribe(data=>{
+        alert("Registration done! Check email to activate your account!")
+      },err =>{
+        alert("Error!!!");
+      });
+    }else
+    {
+      alert("You must correct some fields");
+    }
   }
 
   isBlank(str) {
     return (!str || /^\s*$/.test(str));
+  }
+
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
 }

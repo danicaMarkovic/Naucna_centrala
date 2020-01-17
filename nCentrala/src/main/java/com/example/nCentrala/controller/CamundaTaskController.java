@@ -186,6 +186,29 @@ public class CamundaTaskController {
 	public ResponseEntity<?> finishProcess(@RequestBody UserTaskFormDTO taskDto){
 		System.out.println("Usao");
 		
+		//validacija obaveznih polja
+		for(FormSubmissionDTO field : taskDto.getFormFields())
+		{
+			if(field.getFieldId().equals("name") && field.getFieldValue() == null)
+			{
+				return new ResponseEntity<>(HttpStatus.GONE);
+				
+			}else if (field.getFieldId().equals("issn") && field.getFieldValue() == null)
+			{
+				return new ResponseEntity<>(HttpStatus.GONE);
+				
+			}else if (field.getFieldId().equals("scienceArea") && field.getAreas().size() == 0)
+			{
+				return new ResponseEntity<>(HttpStatus.GONE);
+				
+			}else if (field.getFieldId().equals("paymentMethod") && field.getMethods().size() == 0)
+			{
+				return new ResponseEntity<>(HttpStatus.GONE);
+			}
+		}
+		
+		//////////////////////////
+		
 		Task task = taskService.createTaskQuery().taskId(taskDto.getTaskId()).singleResult();
 		
 		HashMap<String, Object> map = mapListToDto(taskDto.getFormFields());
@@ -208,5 +231,6 @@ public class CamundaTaskController {
 		
 		return map;
 	}
+	
 	
 }

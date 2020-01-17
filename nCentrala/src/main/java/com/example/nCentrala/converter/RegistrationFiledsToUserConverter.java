@@ -65,6 +65,7 @@ public class RegistrationFiledsToUserConverter implements Converter<List<FormSub
 					user.setUsername(field.getFieldValue());
 				}else if(field.getFieldId().equals("areas"))
 				{
+					
 					user.setAreas(this.getAreas(field.getAreas()));
 				}
 			}
@@ -79,9 +80,11 @@ public class RegistrationFiledsToUserConverter implements Converter<List<FormSub
 		
 		for(String area : areas)
 		{
+			System.out.println("Stigla: " + area);
 			ret.add(areaService.getByName(area));
 		}
 		
+		System.out.println("Ret.size()= " + ret.size());
 		return ret;
 	}
 

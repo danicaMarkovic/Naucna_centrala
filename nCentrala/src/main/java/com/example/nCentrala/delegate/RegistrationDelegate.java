@@ -56,8 +56,10 @@ public class RegistrationDelegate implements JavaDelegate {
 		
 		Optional<com.example.nCentrala.model.User> u = userService.findUserByUsername(user.getUsername());
 		
+		com.example.nCentrala.model.User u2 = userService.findUserByEmail(user.getEmail());
 		
-		if(u.isEmpty() && validateRegistrationData(user)) {
+		
+		if(u.isEmpty() && u2 == null && validateRegistrationData(user)) {
 			
 			com.example.nCentrala.model.User userData = new com.example.nCentrala.model.User(user); 
 			
@@ -71,8 +73,6 @@ public class RegistrationDelegate implements JavaDelegate {
 			userData.setRoles(roles);
 			
 			userService.saveUser(userData);
-			
-			
 			
 			//dodavanje u camundinu tabelu user-a
 			User newUser = identityService.newUser(execution.getVariable("username").toString());
@@ -97,7 +97,11 @@ public class RegistrationDelegate implements JavaDelegate {
 		{
 			return false;
 			
-		}else if(!user.getPassword().equals(user.getPassword2()))
+		}else if(!this.isValidEmailAddress(user.getEmail()))
+		{
+			return false;
+		}
+		else if(!user.getPassword().equals(user.getPassword2()))
 		{
 			return false;
 			
@@ -108,5 +112,12 @@ public class RegistrationDelegate implements JavaDelegate {
 		}
 		
 	}
+	
+	public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+ }
 
 }

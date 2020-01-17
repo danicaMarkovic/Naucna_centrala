@@ -32,6 +32,17 @@ public class Reviewer extends User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Reviewer(Long id,String name, String surname, String email, String username, String password, String city,
+			String state, boolean isActivated, Set<ScienceArea> areasOfInterest, Set<Role> roles, String title, boolean adminConfirmation ,Set<Journal> journalReview) {
+		super( name, surname, email, username, password, city, state, isActivated, areasOfInterest, roles);
+		// TODO Auto-generated constructor stub
+		
+		this.title = title;
+		this.adminConfirmation = adminConfirmation;
+		this.journalReview = journalReview;
+		
+	}
 
 	public Reviewer(String name, String surname, String email, String username, String password, String city,
 			String state, boolean isActivated, Set<ScienceArea> areasOfInterest, Set<Role> roles, String title, boolean adminConfirmation ,Set<Journal> journalReview) {

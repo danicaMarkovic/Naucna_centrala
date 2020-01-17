@@ -43,5 +43,5 @@ insert into user_areas_of_interest (user_id, areas_of_interest_id) values (6, 2)
 
 -- Admin --
 insert into user (discriminator, name, surname, email, username, password, city, state, is_activated, title, admin_confirmation)  values ('U','Danica', 'Markovic', 'danica@gmail.com', 'danica', '$2a$10$mLgw3ovM1W0Lun/3MZYVA.a0hZfjPBTs/QjLz97o.Prjrs87YMNHq', 'Novi Sad', 'Srbija', true , "Neka titula", NULL );
-insert into user_roles(user_id, roles_id) values (6,5);
+insert into user_roles(user_id, roles_id) values (7,5);
 

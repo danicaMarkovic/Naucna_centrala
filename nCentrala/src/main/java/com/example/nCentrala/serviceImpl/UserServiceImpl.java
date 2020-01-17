@@ -44,7 +44,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(User user) {
 		// TODO Auto-generated method stub
+		System.out.println("Brise se user " + user.getUsername());
 		userRepository.delete(user);
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.findByEmail(email);
 	}
 
 }

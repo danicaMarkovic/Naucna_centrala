@@ -45,11 +45,9 @@ public class User {
 	private String surname;
 
 	@Column(nullable = false, length = 60)
-	@NaturalId
 	private String email;
 	
 	@Column(nullable = false, length = 60)
-	@NaturalId
 	private String username;
 	
 	@Column(nullable = false)
@@ -65,7 +63,7 @@ public class User {
 	private boolean isActivated;
 	
 	@Column
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonBackReference
 	private Set<ScienceArea> areasOfInterest =  new HashSet<ScienceArea>();
 	

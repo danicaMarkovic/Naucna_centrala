@@ -11,9 +11,11 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
 import { httpInterceptorProviders } from './auth/auth-interceptor.service';
 import { SomeFormComponent } from './some-form/some-form.component';
+import { ActivateUserAccountComponent } from './activate-user-account/activate-user-account.component';
 
 const appRoutes : Routes = [
           {path : '', component : HomepageComponent},
+          {path : 'activate/:id', component : ActivateUserAccountComponent},
           {path : "registration", component : RegistrationComponent},
           {path : 'login', component : LoginComponent},
           {path : 'form/:id', component : SomeFormComponent}
@@ -27,7 +29,8 @@ const appRoutes : Routes = [
     RegistrationComponent,
     HomepageComponent,
     LoginComponent,
-    SomeFormComponent
+    SomeFormComponent,
+    ActivateUserAccountComponent
   ],
   imports: [
     BrowserModule,
