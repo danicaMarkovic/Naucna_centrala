@@ -3,46 +3,32 @@ package com.example.nCentrala.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.nCentrala.modelElastic.ArticleIndex;
-import com.example.nCentrala.repository.ArticleRepository;
+import com.example.nCentrala.model.Article;
+import com.example.nCentrala.repository.ArticleJPARepository;
 import com.example.nCentrala.service.ArticleService;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
 	
 	@Autowired
-	private ArticleRepository articleRep;
+	private ArticleJPARepository articleRep;
 
 	@Override
-	public Iterable<ArticleIndex> findAll() {
+	public Article saveArticle(Article article) {
 		// TODO Auto-generated method stub
-		return articleRep.findAll();
+		return articleRep.save(article);
 	}
 
 	@Override
-	public boolean addArticle(ArticleIndex article) {
+	public Article getByTitle(String title) {
 		// TODO Auto-generated method stub
-		ArticleIndex ret = articleRep.index(article);
-		if(ret != null)
-		{
-			return true;
-		}else
-		{
-			return false;
-		}
+		return articleRep.findOneByTitle(title);
 	}
 
 	@Override
-	public boolean updateArticle(ArticleIndex article) {
+	public Article getLastInsertedArticle() {
 		// TODO Auto-generated method stub
-		ArticleIndex ret  = articleRep.save(article);
-		if(ret != null)
-		{
-			return true;
-		}else
-		{
-			return false;
-		}
+		return articleRep.findTopByOrderByIdDesc();
 	}
 
 }

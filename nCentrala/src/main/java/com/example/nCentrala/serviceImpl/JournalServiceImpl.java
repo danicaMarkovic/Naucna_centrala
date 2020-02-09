@@ -1,5 +1,7 @@
 package com.example.nCentrala.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,6 @@ public class JournalServiceImpl implements JournalService {
 	@Override
 	public Journal getJournalByIssn(String issn) {
 		// TODO Auto-generated method stub
-		System.out.println("velicina " + journalRepository.findByIssn(issn).getName());
 		return journalRepository.findByIssn(issn);
 	}
 
@@ -36,6 +37,18 @@ public class JournalServiceImpl implements JournalService {
 	public void deleteJournal(Journal journal) {
 		// TODO Auto-generated method stub
 		journalRepository.delete(journal);
+	}
+
+	@Override
+	public List<Journal> activeJournals() {
+		// TODO Auto-generated method stub
+		return journalRepository.findAllByIsActivated(true);
+	}
+
+	@Override
+	public Journal getJournalByName(String name) {
+		// TODO Auto-generated method stub
+		return journalRepository.findByName(name);
 	}
 
 }

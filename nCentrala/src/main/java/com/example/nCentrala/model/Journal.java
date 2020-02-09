@@ -1,7 +1,9 @@
 package com.example.nCentrala.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,107 +43,153 @@ public class Journal implements Serializable {
 	@Column(nullable = false)
 	private boolean isActivated;
 	
-	@Column
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JsonBackReference
-	private Set<ScienceArea> scienceAreas =  new HashSet<ScienceArea>();
+	@Column(nullable = false)
+	private double price;
 	
 	@Column
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonBackReference
-	private Set<PaymentMethod> paymentMethods = new HashSet<PaymentMethod>(); 
+	private List<ScienceArea> scienceAreas =  new ArrayList<ScienceArea>();
+	
+	@Column
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonBackReference
+	private List<PaymentMethod> paymentMethods = new ArrayList<PaymentMethod>(); 
 	
 	@OneToOne
 	private Editor mainEditor;
 	
 	@OneToMany(mappedBy="journal",fetch = FetchType.LAZY,orphanRemoval = true)
-	private Set<Editor> editors = new HashSet<Editor>();
+	private List<Editor> editors = new ArrayList<Editor>();
+	
+	@OneToMany(mappedBy="journal",fetch = FetchType.LAZY)
+	private List<Subscription> subscriptions = new ArrayList<Subscription>();
 	
 	public Journal() {}
 	
-	public Journal(Long id, String name, String issn, boolean isOpenAccess, boolean isActivated,
-			Set<ScienceArea> scienceAreas, Set<PaymentMethod> paymentMethods, Editor mainEditor, Set<Editor> editors) {
+
+	public Journal(Long id, String name, String issn, boolean isOpenAccess, boolean isActivated, double price,
+			List<ScienceArea> scienceAreas, List<PaymentMethod> paymentMethods, Editor mainEditor,
+			List<Editor> editors) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.issn = issn;
 		this.isOpenAccess = isOpenAccess;
 		this.isActivated = isActivated;
+		this.price = price;
 		this.scienceAreas = scienceAreas;
 		this.paymentMethods = paymentMethods;
 		this.mainEditor = mainEditor;
 		this.editors = editors;
 	}
 
+
 	public Long getId() {
 		return id;
 	}
+
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+
 	public String getName() {
 		return name;
 	}
+
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public boolean isOpenAccess() {
-		return isOpenAccess;
-	}
-
-	public void setOpenAccess(boolean isOpenAccess) {
-		this.isOpenAccess = isOpenAccess;
-	}
 
 	public String getIssn() {
 		return issn;
 	}
 
+
 	public void setIssn(String issn) {
 		this.issn = issn;
 	}
+
+
+	public boolean isOpenAccess() {
+		return isOpenAccess;
+	}
+
+
+	public void setOpenAccess(boolean isOpenAccess) {
+		this.isOpenAccess = isOpenAccess;
+	}
+
 
 	public boolean isActivated() {
 		return isActivated;
 	}
 
+	public double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+
+	public List<Subscription> getSubscriptions() {
+		return subscriptions;
+	}
+
+
+	public void setSubscriptions(List<Subscription> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+
+
 	public void setActivated(boolean isActivated) {
 		this.isActivated = isActivated;
 	}
 
-	public Set<ScienceArea> getScienceAreas() {
+
+	public List<ScienceArea> getScienceAreas() {
 		return scienceAreas;
 	}
 
-	public void setScienceAreas(Set<ScienceArea> scienceAreas) {
+
+	public void setScienceAreas(List<ScienceArea> scienceAreas) {
 		this.scienceAreas = scienceAreas;
 	}
 
-	public Set<PaymentMethod> getPaymentMethods() {
+
+	public List<PaymentMethod> getPaymentMethods() {
 		return paymentMethods;
 	}
 
-	public void setPaymentMethods(Set<PaymentMethod> paymentMethods) {
+
+	public void setPaymentMethods(List<PaymentMethod> paymentMethods) {
 		this.paymentMethods = paymentMethods;
 	}
+
 
 	public Editor getMainEditor() {
 		return mainEditor;
 	}
 
+
 	public void setMainEditor(Editor mainEditor) {
 		this.mainEditor = mainEditor;
 	}
 
-	public Set<Editor> getEditors() {
+
+	public List<Editor> getEditors() {
 		return editors;
 	}
 
-	public void setEditors(Set<Editor> editors) {
+
+	public void setEditors(List<Editor> editors) {
 		this.editors = editors;
 	}
 	

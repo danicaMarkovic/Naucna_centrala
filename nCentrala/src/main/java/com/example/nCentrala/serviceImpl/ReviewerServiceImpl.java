@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.nCentrala.modelElastic.ReviewerIndex;
-import com.example.nCentrala.repository.ReviewerRepository;
+import com.example.nCentrala.repository.ReviewerIndexRepository;
 import com.example.nCentrala.service.ReviewerService;
 
 @Service
 public class ReviewerServiceImpl implements ReviewerService {
 
 	@Autowired
-	public ReviewerRepository reviewerRep;
+	public ReviewerIndexRepository reviewerRep;
 	
 	@Override
 	public Iterable<ReviewerIndex> findAll() {

@@ -5,6 +5,10 @@ import { UniversalService } from '../services/universal/universal.service';
 import { UserTaskDTO } from '../model/UserTaskDTO';
 import { UserService } from '../services/user/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { JournalService } from '../services/journal/journal.service';
+import { FileService } from '../services/file/file.service';
+import { formatDate } from '@angular/common';
+import { TokenStorageService } from '../auth/token-storage.service';
 
 @Component({
   selector: 'app-some-form',
@@ -23,9 +27,24 @@ export class SomeFormComponent implements OnInit {
   private editors = [];
   private reviewers = [];
   private readOnlyFields = true;
+  private journals;
+  private scienceAreas;
+  selectedFile : File = null;
+  private selectedFiles = false;
+  private pdfPath;
+  private newPdf;
+  private choosenRev = [];
+  private newReviewer = [];
+  private enumValues = [];
+  private reviews = [];
+  private dataDiv = false;
+  private authorLoggedIn = false;
+  private editorLoggedIn = false;
+  private roles: string[] = [];
 
-  constructor(private camundaService : CamundaService, private router : ActivatedRoute, 
-              private uniService : UniversalService,  private userS : UserService) { 
+  constructor(private camundaService : CamundaService, private router : ActivatedRoute, private fileService : FileService,
+              private uniService : UniversalService,  private userS : UserService, private journalService : JournalService,
+              private tokenStorage: TokenStorageService) { 
 
     this.taskId = this.router.snapshot.params.id;
 
@@ -36,6 +55,13 @@ export class SomeFormComponent implements OnInit {
       this.formFields = res.formFields;
       this.journalDTO.processId = res.processInstanceId;
       this.journalDTO.taskId = res.taskId;
+
+      this.formFields.forEach( (field) =>{
+          
+        if( field.type.name=='enum'){
+          this.enumValues = Object.keys(field.type.values);
+        }
+      });
 
       if(this.taskName == 'Choose editors')
     {
@@ -48,15 +74,58 @@ export class SomeFormComponent implements OnInit {
       (<HTMLInputElement>document.getElementById("issn")).readOnly = true;
       (<HTMLInputElement>document.getElementById("openAccess")).readOnly = true;
     }
-
-    if(this.taskName == 'Choose reviewers' )
+     if(this.taskName == 'Choose reviewers' )
     {
-      console.log("USAOOOOOOOOOOOOOOOOOOOOO");
       this.userS.getUserByRole("reviewer").subscribe(res =>{
 
         this.reviewers = res;
-        console.log("R: " + res);
   
+      });
+    }
+
+    // if(this.taskName == 'Choose journal')
+    // {
+    //   this.journalService.getAllActiveJournals().subscribe(res => {
+
+    //     this.journals = res;
+        
+    //   });
+    // }
+
+    // if(this.taskName == 'Article form')
+    // {
+    //   this.uniService.getAllScienceAreas().subscribe(res=>{
+        
+    //     this.scienceAreas = res;
+
+    //   });
+    // }
+
+    if(this.taskName == 'Choose reviewers for article')
+    {
+      this.userS.getReviewersForArticle().subscribe(res => {
+
+        this.choosenRev = res;
+        
+      });
+    }
+
+    if(this.taskName == 'Analyze review')
+    {
+      this.uniService.getArticleReviews().subscribe(res => {
+
+        this.reviews = res;
+        this.dataDiv = true;
+      });
+    }
+
+    if(this.taskName == 'See comments from reviewers')
+    {
+      this.uniService.getArticleReviews().subscribe(res => {
+
+        this.reviews = res;
+        this.dataDiv = true;
+        
       });
     }
 
@@ -75,10 +144,29 @@ export class SomeFormComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (this.tokenStorage.getToken()) {
+      
+      this.roles = this.tokenStorage.getAuthorities();
+      
+      this.roles.forEach(element =>{
+
+          if(element == 'ROLE_EDITOR')
+          {
+            this.editorLoggedIn = true;
+          }
+
+          if(element == 'ROLE_AUTHOR')
+          {
+            this.authorLoggedIn = true;
+          }
+      });
+    }
+
   }
 
   onSubmit(value, form){
-    
+    console.log("Submit");
     let formFields = new Array();
     let ret = "";
     let ret2 = "";
@@ -86,9 +174,11 @@ export class SomeFormComponent implements OnInit {
     let countRew = 0;
     let retEditors = "";
     let countEd = 0;
+    let retArticleRev = "";
+    let countArticleRev = 0;
 
     for (var property in value) {
-     
+      console.log("Property: " + property + " ,value: " + value[property]);
       if(property == 'name' && this.isBlank(value[property]))
       {
         alert('Enter name!')
@@ -118,10 +208,10 @@ export class SomeFormComponent implements OnInit {
 
       }else if(property == 'reviewers')
       {
-        if(value[property].length  < 2)
-        {
-          alert("You must choose min 2 reviewers");
-        }else
+        // if(value[property].length  < 2)
+        // {
+        //  // alert("You must choose min 2 reviewers");
+        // }else
         {
           value[property].forEach(element => {
             retRew = value[property] + ",";
@@ -144,9 +234,33 @@ export class SomeFormComponent implements OnInit {
           formFields.push({fieldId : property, fieldValue : 	retEditors.substring(0, retEditors.length - 1)});
         }
 
+      }else if(property == 'choosenReviewers')
+      {
+        value[property].forEach(element => {
+
+          retArticleRev = value[property] + ",";
+          countArticleRev++;
+        });
+        formFields.push({fieldId : property, fieldValue : 	retArticleRev.substring(0, retArticleRev.length - 1)});
+      }
+      else if(property == 'pdf')
+      {
+        formFields.push({fieldId : property, fieldValue : this.pdfPath}); 
+      }else if(property == 'newPdf' || property == 'changedPdf')
+      {
+        formFields.push({fieldId : property, fieldValue : this.newPdf}); 
+      }
+      else if(property == 'deadline' || property == 'reviewingDeadline')
+      {
+        const format = 'dd/MM/yyyy';
+        const locale = 'en-US';
+        const formattedDate = formatDate(value[property], format, locale);
+       
+        formFields.push({fieldId : property, fieldValue : formattedDate});
       }
       else
       {
+        
         formFields.push({fieldId : property, fieldValue : value[property]});
       }
 
@@ -155,7 +269,6 @@ export class SomeFormComponent implements OnInit {
 
     if(this.taskName == 'New journal')
     {
-      console.log("Usao ovde");
       this.journalDTO.formFields = formFields;
       this.camundaService.finishNewJournalForm(this.journalDTO).subscribe(res =>{
       alert("Task " + this.taskName + " done.");
@@ -166,15 +279,15 @@ export class SomeFormComponent implements OnInit {
     }else
     {
 
-      if(this.taskName == 'Choose reviewers' && countRew < 2) 
-      {
-        alert("Minimum 2 reviewer must be choosen");
+      // if(this.taskName == 'Choose reviewers' && countRew < 2) 
+      // {
+      //   alert("Minimum 2 reviewer must be choosen");
 
-      }else if(this.taskName == 'Choose editors' && countEd == 0)
-      {
-        alert("Editor must be choosen");
-      }else
-      {
+      // }else if(this.taskName == 'Choose editors' && countEd == 0)
+      // {
+      //   alert("Editor must be choosen");
+      // }else
+   //   {
         this.camundaService.finishTaskById(this.taskId,formFields).subscribe(res =>{
       
           alert("Task " + this.taskName + " done.");
@@ -182,8 +295,25 @@ export class SomeFormComponent implements OnInit {
         }, err =>{
           alert("Error while completing task " + this.taskName);
         });
-      }
+ //     }
     }
+  }
+
+  onFileSelected(event){
+
+    console.log("File select");
+    this.selectedFile = <File>event.target.files[0];
+    this.selectedFiles = true;
+
+    const formData : FormData = new FormData();
+    formData.append('file', this.selectedFile);
+    
+    this.fileService.storeFile(formData).subscribe(res => {
+      //alert("Uspeh");
+      this.pdfPath = res;
+      this.newPdf = res;
+    });
+    
   }
 
   isBlank(str) {

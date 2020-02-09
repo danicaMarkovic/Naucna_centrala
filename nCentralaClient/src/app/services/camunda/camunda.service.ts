@@ -35,6 +35,11 @@ export class CamundaService {
 
     return this.httpClient.get(this.url + "/startJournalProcess");
   }
+
+  startJournalEditingProcess() : Observable<any>{
+
+    return this.httpClient.get(this.url + "/startEditingProcess");
+  }
   
   finishNewJournalForm(dto : UserTaskDTO){
 

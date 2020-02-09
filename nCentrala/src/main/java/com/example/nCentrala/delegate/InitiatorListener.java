@@ -31,12 +31,10 @@ public class InitiatorListener implements ExecutionListener {
 		if(header != null)
 		{
 			String parts[] = header.split(" "); 
-			//System.out.println("Bearer deo: " + parts[0]);
-			//System.out.println("Token: " + parts[1]);
 			
 			String username = jwtProvider.getUserNameFromJwtToken(parts[1]);
 			
-			return username; // 
+			return username;
 		}else
 		{
 			return null;

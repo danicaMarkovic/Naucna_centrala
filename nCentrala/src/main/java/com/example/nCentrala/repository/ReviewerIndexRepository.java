@@ -4,6 +4,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import com.example.nCentrala.modelElastic.ReviewerIndex;
 
-public interface ReviewerRepository extends ElasticsearchRepository<ReviewerIndex, Long> {
+public interface ReviewerIndexRepository extends ElasticsearchRepository<ReviewerIndex, Long> {
 
 }

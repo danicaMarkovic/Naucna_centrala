@@ -19,6 +19,7 @@ export class HomepageComponent implements OnInit {
   private user   = new UserTaskDTO();
   private taskDtos = [];
   private editorLoggedIn = false;
+  private authorLoggedIn = false;
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService,
               private userServ : UserService, private camundaService : CamundaService) { }
@@ -35,6 +36,11 @@ export class HomepageComponent implements OnInit {
           {
             this.editorLoggedIn = true;
           }
+
+          if(element == 'ROLE_AUTHOR')
+          {
+            this.authorLoggedIn = true;
+          }
       });
 
       this.userServ.getUserByUsername(this.tokenStorage.getUsername()).subscribe(res=>{
@@ -43,6 +49,7 @@ export class HomepageComponent implements OnInit {
 
       this.camundaService.getTasksForLogedUser().subscribe(res =>{
         this.taskDtos = res;
+        
       }, err => {
         alert("Some error happend during getting tasks for user");
       });
@@ -73,8 +80,15 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  startRegistrationProcess() {
-    alert("Klik");
+  startJournalEditingProcess(){
+   
+    this.camundaService.startJournalEditingProcess().subscribe(res => {
+
+      window.location.href = "http://localhost:1337";
+
+    }, err => {
+      alert("Error");
+    });
   }
 
 }

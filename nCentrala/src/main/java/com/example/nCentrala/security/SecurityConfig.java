@@ -64,6 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/journal/**").permitAll()
                 .antMatchers("/task/**").permitAll()
                 .antMatchers("/article/**").permitAll()
+                .antMatchers("/file/**").permitAll()
+                .antMatchers("/review/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

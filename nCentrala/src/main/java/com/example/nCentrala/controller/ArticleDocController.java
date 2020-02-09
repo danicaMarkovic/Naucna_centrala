@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.nCentrala.modelElastic.ArticleIndex;
-import com.example.nCentrala.service.ArticleService;
+import com.example.nCentrala.service.ArticleIndexService;
 
 
 @RestController
@@ -18,7 +18,7 @@ import com.example.nCentrala.service.ArticleService;
 public class ArticleDocController {
 
 	@Autowired
-	private ArticleService articleService;
+	private ArticleIndexService articleService;
 	
 	@GetMapping("/getAll")
 	public Iterable<ArticleIndex> getAllArticles()

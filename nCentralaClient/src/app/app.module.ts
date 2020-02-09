@@ -12,13 +12,16 @@ import { LoginComponent } from './login/login.component';
 import { httpInterceptorProviders } from './auth/auth-interceptor.service';
 import { SomeFormComponent } from './some-form/some-form.component';
 import { ActivateUserAccountComponent } from './activate-user-account/activate-user-account.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { formatDate } from "@angular/common";
 
 const appRoutes : Routes = [
           {path : '', component : HomepageComponent},
           {path : 'activate/:id', component : ActivateUserAccountComponent},
           {path : "registration", component : RegistrationComponent},
           {path : 'login', component : LoginComponent},
-          {path : 'form/:id', component : SomeFormComponent}
+          {path : 'form/:id', component : SomeFormComponent},
+          {path : 'file', component : FileUploadComponent}
 ];
 
 @NgModule({
@@ -30,7 +33,8 @@ const appRoutes : Routes = [
     HomepageComponent,
     LoginComponent,
     SomeFormComponent,
-    ActivateUserAccountComponent
+    ActivateUserAccountComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,

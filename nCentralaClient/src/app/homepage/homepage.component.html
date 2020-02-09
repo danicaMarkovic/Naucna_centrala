@@ -29,7 +29,7 @@
                     <aside>
   
                         <!--Social Icons in Header-->
-                        <ul class="social-icons">
+                        <!-- <ul class="social-icons">
                             <li>
                                 <a target="_blank" title="Facebook" href="https://www.facebook.com/username">
                                     <i class="fa fa-facebook fa-1x"></i><span>Facebook</span>
@@ -55,7 +55,7 @@
                                     <i class="fa fa-behance fa-1x"></i><span>Behance</span>
                                 </a>
                             </li>
-                        </ul>
+                        </ul> -->
                         <!--End of Social Icons in Header-->
   
                     </aside>
@@ -102,6 +102,9 @@
                 <h2 *ngIf="editorLoggedIn == true">Start NewJournal process</h2>
                 <a *ngIf="editorLoggedIn == true" [routerLink]="" (click)="startJournalProcess()" class="button">Start</a>
                 
+                <h2 *ngIf="authorLoggedIn == true">Start JournalEditing process</h2>
+                <a  *ngIf="authorLoggedIn == true" [routerLink]="" (click)="startJournalEditingProcess()" class="button">Start</a>
+                
                 <!--End Call to Action-->
   
             </div>
@@ -140,11 +143,11 @@
                             </colgroup>
                             <tr>
                                 <th class="tg-9cs8">Task Name</th>
-                                <th class="tg-9cs8">Complete</th>
+                                <th class="tg-9cs8">Claim</th>
                             </tr>
                             <tr *ngFor="let task of taskDtos" >
                                 <td class="tg-oe15">{{task.name}}</td>
-                                <td class="tg-oe15"><button type="button" class="complete" (click)="completeTask(task.taskId)">Complete</button></td>
+                                <td class="tg-oe15"><button type="button" class="complete" (click)="completeTask(task.taskId)">Claim</button></td>
                             </tr>
                             </table>
                     </div>

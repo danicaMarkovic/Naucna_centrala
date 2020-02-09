@@ -9,4 +9,5 @@ public interface ScienceAreaService {
 	List<ScienceArea>  getAllAreas();
 	
 	ScienceArea getByName(String name);
+	
 }

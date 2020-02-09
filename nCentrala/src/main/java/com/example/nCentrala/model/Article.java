@@ -30,22 +30,28 @@ public class Article implements Serializable{
 	@Column(nullable = false)
 	private String keyWords;
 	
+	@Column(nullable = false)
+	private ArticleStatus accepted;
+	
 	@ManyToOne
 	private Journal journal;
 	
+	
+	private String pdfPath;
+	
 	public Article() {}
 
-	
-	public Article(Long id, String title, String apstract, ScienceArea scienceArea, String keyWords, Journal journal) {
+	public Article(String title, String apstract, ScienceArea scienceArea, String keyWords, ArticleStatus accepted,
+			Journal journal, String pdfPath) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.apstract = apstract;
 		this.scienceArea = scienceArea;
 		this.keyWords = keyWords;
+		this.accepted = accepted;
 		this.journal = journal;
+		this.pdfPath = pdfPath;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -96,6 +102,21 @@ public class Article implements Serializable{
 	public void setKeyWords(String keyWords) {
 		this.keyWords = keyWords;
 	}
-	
+
+	public ArticleStatus getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(ArticleStatus accepted) {
+		this.accepted = accepted;
+	}
+
+	public String getPdfPath() {
+		return pdfPath;
+	}
+
+	public void setPdfPath(String pdfPath) {
+		this.pdfPath = pdfPath;
+	}
 	
 }

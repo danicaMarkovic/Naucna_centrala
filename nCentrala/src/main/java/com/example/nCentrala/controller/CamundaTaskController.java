@@ -13,6 +13,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
+import org.camunda.bpm.engine.impl.form.validator.FormFieldValidationException;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,8 @@ public class CamundaTaskController {
 	private String registrationProcessKey = "NewRegistration";
 	
 	private String newJournalProcessKey = "NewJournal";
+	
+	private String journalEditing = "JournalEditing";
 	
 	
 	@RequestMapping(
@@ -104,6 +107,19 @@ public class CamundaTaskController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@RequestMapping(
+			value="startEditingProcess",
+			method = RequestMethod.GET)
+	@PreAuthorize("hasRole('AUTHOR')")
+	public ResponseEntity<?> startJournalEditingProcess(){
+		
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("JournalEditing");
+		
+		Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).list().get(0);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/get/tasks/{processInstanceId}",
 							method = RequestMethod.GET,
 							produces = "application/json")
@@ -129,21 +145,37 @@ public class CamundaTaskController {
 		
 		HashMap<String, Object> map = mapListToDto(dto);
 			
-		formService.submitTaskForm(taskId, map);
+		try {
+			formService.submitTaskForm(taskId, map);
+		}catch (FormFieldValidationException e) {
+			// TODO: handle exception
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 			
 		return new ResponseEntity<> (HttpStatus.OK);
 			
 	}
-	
+	//ovde dodati proveru assigneee
 	@RequestMapping(
 			value="getTaskField/{id}",
 			method = RequestMethod.GET)
 	public ResponseEntity<?>  getFormFields(@PathVariable("id") String taskId) {
 		
-		
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		
 		TaskFormData tfd = formService.getTaskFormData(taskId);
+		
+		String assigne = task.getAssignee();
+		
+		if(assigne != null)
+		{
+			String username = jwtProvider.getUsernameLoggedUser();
+			
+			if(!assigne.equals(username))
+			{
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			}
+		}
 		
 		List<FormField> properties = tfd.getFormFields();
 		
@@ -162,6 +194,9 @@ public class CamundaTaskController {
 		List<Task> tasks2 = taskService.createTaskQuery().processDefinitionKey(this.newJournalProcessKey)
 				.taskAssignee(jwtProvider.getUsernameLoggedUser()).list();
 		
+		List<Task> tasks3 = taskService.createTaskQuery().processDefinitionKey(this.journalEditing)
+				.taskAssignee(jwtProvider.getUsernameLoggedUser()).list();
+		
 		List<TaskDTO> dtos = new ArrayList<TaskDTO>();
 		
 		for (Task task : tasks1) {
@@ -170,6 +205,11 @@ public class CamundaTaskController {
 		}
 		
 		for (Task task : tasks2) {
+			TaskDTO t = new TaskDTO(task.getId(), task.getName(), task.getAssignee());
+			dtos.add(t);
+		}
+		
+		for (Task task : tasks3) {
 			TaskDTO t = new TaskDTO(task.getId(), task.getName(), task.getAssignee());
 			dtos.add(t);
 		}

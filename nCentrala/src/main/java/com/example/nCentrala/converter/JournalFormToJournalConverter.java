@@ -74,29 +74,27 @@ public class JournalFormToJournalConverter implements Converter<List<FormSubmiss
 			 
 	}
 	
-	private Set<ScienceArea> getAreas(ArrayList<String> areas)
+	private List<ScienceArea> getAreas(ArrayList<String> areas)
 	{
-		Set<ScienceArea> ret = new HashSet<>();
+		List<ScienceArea> ret = new ArrayList<>();
 		
 		for(String area : areas)
 		{
 			ret.add(areaService.getByName(area));
 		}
-		System.out.println("Areas.size()= " + ret.size());
+		
 		return ret;
 	}
 	
-	private Set<PaymentMethod> getMethods(ArrayList<String> methods)
+	private List<PaymentMethod> getMethods(ArrayList<String> methods)
 	{
 		
-		Set<PaymentMethod> ret = new HashSet<>();
+		List<PaymentMethod> ret = new ArrayList<>();
 		
 		for(String method : methods)
 		{
 			ret.add(paymentService.getByName(method));
 		}
-		
-		
 		
 		return ret;
 		

@@ -18,4 +18,10 @@ export class UniversalService {
 
     return this.httpClient.get('http://localhost:8090/area/all');
   }
+
+  getArticleReviews() : Observable<any> {
+   
+    return this.httpClient.get('http://localhost:8090/review/articleReview');
+  }
+  
 }

@@ -40,8 +40,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.nCentrala.jwt.JwtProvider;
 import com.example.nCentrala.jwt.JwtResponse;
+import com.example.nCentrala.model.Article;
 import com.example.nCentrala.model.Editor;
 import com.example.nCentrala.model.Journal;
+import com.example.nCentrala.model.Reviewer;
 import com.example.nCentrala.model.Role;
 import com.example.nCentrala.model.RoleName;
 import com.example.nCentrala.model.ScienceArea;
@@ -52,6 +54,7 @@ import com.example.nCentrala.model.dto.LoginInfoDTO;
 import com.example.nCentrala.model.dto.UserDTO;
 import com.example.nCentrala.model.dto.UserTaskFormDTO;
 import com.example.nCentrala.repository.UserRepository;
+import com.example.nCentrala.service.ArticleService;
 import com.example.nCentrala.service.JournalService;
 import com.example.nCentrala.service.RoleService;
 import com.example.nCentrala.service.UserService;
@@ -82,6 +85,12 @@ public class UserController {
 	
 	@Autowired
 	private JwtProvider jwtProvider;
+	
+	@Autowired
+	private UserRepository userRep;
+	
+	@Autowired
+	private ArticleService articleService;
 
 	
 	@RequestMapping(
@@ -160,11 +169,25 @@ public class UserController {
 			
 		}else if(name.equals("autor"))
 		{
-			list = userService.getUserByRole(RoleName.ROLE_AUTOR);
+			list = userService.getUserByRole(RoleName.ROLE_AUTHOR);
 		}
 		
 		
 		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "getReviewers",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<List<Reviewer>> getByRoleAndArea() {
+		
+		Article article = articleService.getLastInsertedArticle();
+		
+		List<Reviewer> users = userRep.findAllByJournalReview_Id(article.getJournal().getId());
+		
+
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
 	private List<User> getReviewersWithArea(List<User> users, Journal journal)

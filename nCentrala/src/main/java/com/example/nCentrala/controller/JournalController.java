@@ -1,5 +1,6 @@
 package com.example.nCentrala.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.nCentrala.model.Journal;
 import com.example.nCentrala.model.dto.FormSubmissionDTO;
+import com.example.nCentrala.model.dto.JournalDTO;
 import com.example.nCentrala.model.dto.UserTaskFormDTO;
 import com.example.nCentrala.service.JournalService;
 
@@ -39,6 +42,19 @@ public class JournalController {
 	@Autowired
 	private FormService formService;
 	
-	
+	@RequestMapping(value="/all",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<JournalDTO>> getAllActiveJournals(){
+		
+		List<JournalDTO> jDTO = new ArrayList<JournalDTO>();
+		
+		for(Journal j : journalService.activeJournals()) {
+			
+			jDTO.add(new JournalDTO(j));
+		}
+		
+		return new ResponseEntity<>(jDTO, HttpStatus.OK);
+	}
 	
 }

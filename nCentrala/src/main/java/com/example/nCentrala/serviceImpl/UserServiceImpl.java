@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.nCentrala.model.Reviewer;
 import com.example.nCentrala.model.RoleName;
 import com.example.nCentrala.model.User;
 import com.example.nCentrala.repository.UserRepository;
@@ -52,6 +53,12 @@ public class UserServiceImpl implements UserService {
 	public User findUserByEmail(String email) {
 		// TODO Auto-generated method stub
 		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public List<Reviewer> getJournalReviewers(Long journalId) {
+		// TODO Auto-generated method stub
+		return userRepository.findAllByJournalReview_Id(journalId);
 	}
 
 }

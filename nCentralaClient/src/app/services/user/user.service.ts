@@ -19,4 +19,9 @@ export class UserService {
     return this.httpClient.get('http://localhost:8090/user/getUser/'+username);
   }
 
+  getReviewersForArticle() : Observable<any> {
+
+    return this.httpClient.get('http://localhost:8090/user/getReviewers');
+  }
+
 }

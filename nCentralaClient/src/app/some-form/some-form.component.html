@@ -20,12 +20,31 @@
                 <div class="col-md-8 py-5 border">
                     <h2>{{taskName}}</h2>
                     <form  #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
+                        <div class="form-group" *ngIf="dataDiv == true">
+                            <div class="divSub" *ngFor="let r of reviews">
+                                <p class="pmove">Review from: {{r.user.name}}</p>
+                                <p class="pmove" *ngIf="authorLoggedIn == true || editorLoggedIn == true">Comment for author: {{r.authorC}}</p>
+                                <p class="pmove" *ngIf="editorLoggedIn == true">Comment for editor: {{r.editorC}}</p>
+                                <p class="pmove" *ngIf="editorLoggedIn == true">Recommendation: {{r.recommendation}}</p>
+                            </div>
+                        </div>
                         <div class="all" *ngFor="let field of formFields">
+                            
                             <div class="form-group">
                                 <label for="{{field.id}}">{{field.label}}</label>
-                                <input  type="text" class="form-control" name="{{field.id}}" id="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='string' && field.id != 'password' && field.id != 'password2'  && field.id != 'editors' && field.id != 'reviewers'">
+                                <input  type="text" class="form-control" name="{{field.id}}" id="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}"  *ngIf="field.type.name=='string' && field.id != 'password' && field.id != 'password2'  && field.id != 'editors' && field.id != 'reviewers'  && field.id != 'articleScienceArea' && field.id != 'pdf' && field.id != 'newPdf' && field.id != 'choosenReviewers' && field.id != 'replaceReviewer' && field.id != 'changedPdf'">
                                 <input  type="checkbox" class="form-control" name="{{field.id}}" id="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='boolean'">
                                 <input  type="number" class="form-control" name="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='long'">
+                                <input  type="date" class="form-control" name="{{field.id}}" ngModel={{field.value.value}} placeholder="{{field.label}}" *ngIf="field.type.name=='date'" value="dd/MM/yyyy">
+                                <!-- <select *ngIf="field.id == 'journals'" name={{field.id}} class="form-control" ngModel>
+                                    <option *ngFor="let val of journals" value={{val.issn}}>{{val.name}}</option>
+                                </select> -->
+                                <!-- <select *ngIf="field.id == 'articleScienceArea'" name={{field.id}} class="form-control" ngModel>
+                                    <option *ngFor="let val of scienceAreas" value={{val.name}}>{{val.name}}</option>d
+                                </select> -->
+                                <!-- <select *ngIf="field.id == 'replaceReviewer'" name={{field.id}} class="form-control" ngModel>
+                                        <option *ngFor="let val of choosenRev" value={{val.username}}>{{val.name}} {{val.surname}}</option>d
+                                </select> -->
                                 <select multiple name="{{field.id}}" *ngIf="field.id == 'scienceArea'"  ngModel class="form-control">
                                     <option *ngFor="let val of areas" value={{val.name}}>
                                             {{val.name}}
@@ -36,7 +55,7 @@
                                             {{val.name}}
                                     </option>
                                 </select>
-                                <select multiple name="{{field.id}}" class="form-control" ngModel *ngIf="field.type.name=='enum' && field.id != 'paymentMethod' && field.id != 'scienceArea' && field.id != 'editors'">
+                                <select multiple name="{{field.id}}" class="form-control" ngModel *ngIf="field.type.name=='enum' && field.id != 'paymentMethod' && field.id != 'scienceArea' && field.id != 'editors' && field.id != 'rewRecommendation' && field.id != 'journals' && field.id != 'articleScienceArea' && field.id != 'acceptArticle' && field.id != 'replaceReviewer' && field.id != 'newReviewer'">
                                     <option *ngFor="let val of enumValues" value={{val}}>
                                       {{field.type.values[val]}}
                                     </option>
@@ -45,15 +64,26 @@
                                     <option *ngFor="let val of editors" value={{val.username}}>
                                         {{val.name}} {{val.surname}}
                                     </option>
-                                </select>
+                                </select> 
                                 <select multiple name="{{field.id}}"  *ngIf="field.id == 'reviewers'"  ngModel  class="form-control">
                                     <option *ngFor="let val of reviewers" value={{val.username}}>
                                         {{val.name}} {{val.surname}}
                                     </option>
                                 </select>
+                                <select multiple name="{{field.id}}"  *ngIf="field.id == 'choosenReviewers'"  ngModel  class="form-control">
+                                    <option *ngFor="let val of choosenRev" value={{val.username}}>
+                                        {{val.name}} {{val.surname}}
+                                    </option>
+                                </select>
+                                <select name="{{field.id}}" *ngIf="field.type.name=='enum' && field.id != 'choosenReviewers'" ngModel class="form-control">
+                                    <option *ngFor="let val of enumValues" value={{val}}>
+                                      {{field.type.values[val]}}
+                                    </option>
+                                </select>
+                                <input *ngIf="field.id == 'pdf' || field.id == 'newPdf' || field.id == 'changedPdf'" type="file"  name="{{field.id}}" class="form-control" ngModel (change)="onFileSelected($event)" accept="application/pdf,application/vnd.ms-excel">
                             </div>
                         </div>
-                        <input type="submit" value="Submit" class="btn btn-primary">
+                        <input type="submit"  value="Submit" class="btn btn-primary">
                     </form>
                 </div>
             </div>
