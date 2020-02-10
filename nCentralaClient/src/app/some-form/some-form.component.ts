@@ -9,6 +9,7 @@ import { JournalService } from '../services/journal/journal.service';
 import { FileService } from '../services/file/file.service';
 import { formatDate } from '@angular/common';
 import { TokenStorageService } from '../auth/token-storage.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-some-form',

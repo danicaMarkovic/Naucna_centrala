@@ -106,9 +106,21 @@
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="reject" label="Reject article?" type="boolean" />
-          <camunda:formField id="titleE" label="Title:" type="string" defaultValue="${title}" />
-          <camunda:formField id="apstractE" label="Apstract:" type="string" defaultValue="${apstract}" />
-          <camunda:formField id="keywordsE" label="Keywords:" type="string" defaultValue="${keywords}" />
+          <camunda:formField id="titleE" label="Title:" type="string" defaultValue="${title}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" config="true" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="apstractE" label="Apstract:" type="string" defaultValue="${apstract}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" config="true" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="keywordsE" label="Keywords:" type="string" defaultValue="${keywords}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" config="true" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_174xjbz</bpmn:incoming>
@@ -128,9 +140,9 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${reject == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="EndEvent_0296j37">
-      <bpmn:incoming>SequenceFlow_178mugz</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0fe6jjy</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_178mugz" name="Rejected" sourceRef="ExclusiveGateway_0vxmtst" targetRef="EndEvent_0296j37">
+    <bpmn:sequenceFlow id="SequenceFlow_178mugz" name="Rejected" sourceRef="ExclusiveGateway_0vxmtst" targetRef="Task_1logdpn">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${reject == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1nkld2g" sourceRef="Task_0pj323o" targetRef="ExclusiveGateway_0xxwea7" />
@@ -221,11 +233,15 @@
     <bpmn:userTask id="Task_0clbma7" name="Correction" camunda:assignee="${initiator}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="title" label="Title" type="string" defaultValue="${title}" />
-          <camunda:formField id="editorComment" label="Editor comment:" type="string" defaultValue="${comentForAuthor}" />
+          <camunda:formField id="editorsComment" label="Editor comment:" type="string" defaultValue="${oneComentForAuthor}" />
           <camunda:formField id="newPdf" type="string">
             <camunda:validation>
               <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="formTitle" label="Title" type="string" defaultValue="${title}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" config="true" />
             </camunda:validation>
           </camunda:formField>
         </camunda:formData>
@@ -237,16 +253,14 @@
     <bpmn:userTask id="Task_1drkzaz" name="Comment and deadline seting" camunda:assignee="${mainEditor}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="comentForAuthor" label="Comment for author:" type="string">
+          <camunda:formField id="oneComentForAuthor" label="Comment for author:" type="string">
             <camunda:validation>
               <camunda:constraint name="required" config="true" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="deadline" label="Deadline expires on:" type="date">
-            <camunda:validation>
-              <camunda:constraint name="required" config="true" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="deadlineDays" label="Days" type="long" defaultValue="0" />
+          <camunda:formField id="deadlineHours" label="Hours" type="long" defaultValue="0" />
+          <camunda:formField id="deadlineMinutes" label="Minutes" type="long" defaultValue="1" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0edncah</bpmn:incoming>
@@ -255,7 +269,7 @@
     <bpmn:boundaryEvent id="IntermediateThrowEvent_0s9sk4t" attachedToRef="Task_0clbma7">
       <bpmn:outgoing>SequenceFlow_12dy3d4</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${deadline}</bpmn:timeDate>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P${deadlineDays}DT${deadlineHours}H${deadlineMinutes}M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="EndEvent_0pbfrff">
@@ -678,6 +692,11 @@
     <bpmn:sequenceFlow id="SequenceFlow_1yluh0e" name="No" sourceRef="ExclusiveGateway_17ugxg5" targetRef="EndEvent_10901g0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${subscribe == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0fe6jjy" sourceRef="Task_1logdpn" targetRef="EndEvent_0296j37" />
+    <bpmn:serviceTask id="Task_1logdpn" name="Emails notification for rejecting" camunda:class="com.example.nCentrala.delegate.EmailToAuthorInvalidPdf">
+      <bpmn:incoming>SequenceFlow_178mugz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0fe6jjy</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="JournalEditing">
@@ -789,13 +808,13 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_0296j37_di" bpmnElement="EndEvent_0296j37">
-        <dc:Bounds x="2932" y="542" width="36" height="36" />
+        <dc:Bounds x="2932" y="632" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_178mugz_di" bpmnElement="SequenceFlow_178mugz">
         <di:waypoint x="2950" y="482" />
-        <di:waypoint x="2950" y="542" />
+        <di:waypoint x="2950" y="520" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2933" y="480" width="44" height="14" />
+          <dc:Bounds x="2933" y="481" width="44" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1nkld2g_di" bpmnElement="SequenceFlow_1nkld2g">
@@ -895,18 +914,18 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_12dy3d4_di" bpmnElement="SequenceFlow_12dy3d4">
         <di:waypoint x="3278" y="800" />
-        <di:waypoint x="3350" y="800" />
+        <di:waypoint x="3310" y="800" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0h42qv3_di" bpmnElement="SequenceFlow_0h42qv3">
         <di:waypoint x="3160" y="800" />
         <di:waypoint x="3110" y="800" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0yzylc7_di" bpmnElement="SequenceFlow_0yzylc7">
-        <di:waypoint x="3450" y="800" />
+        <di:waypoint x="3410" y="800" />
         <di:waypoint x="3472" y="800" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_1gwl0el_di" bpmnElement="Task_1w4k2m2">
-        <dc:Bounds x="3350" y="760" width="100" height="80" />
+        <dc:Bounds x="3310" y="760" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0m820on_di" bpmnElement="SequenceFlow_0m820on">
         <di:waypoint x="3010" y="800" />
@@ -1378,6 +1397,13 @@
           <dc:Bounds x="888" y="519" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0fe6jjy_di" bpmnElement="SequenceFlow_0fe6jjy">
+        <di:waypoint x="2950" y="600" />
+        <di:waypoint x="2950" y="632" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1bmrdz3_di" bpmnElement="Task_1logdpn">
+        <dc:Bounds x="2900" y="520" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

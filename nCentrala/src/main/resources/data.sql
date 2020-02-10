@@ -62,14 +62,14 @@ insert into journal_science_areas (journal_id,science_areas_id) values (2,1); --
 insert into journal_science_areas (journal_id,science_areas_id) values (2,2); -- prirodne nauke
 insert into journal_payment_methods (journal_id, payment_methods_id) values (1, 1); --bitcoin
 
-insert into journal(is_activated, is_open_access, issn, name, main_editor_id, price) values (true, true, '1111-4444', 'Istorija umetnosti' ,5,10);
-insert into journal_science_areas (journal_id,science_areas_id) values (3,1); -- drustvene nauke
-insert into journal_science_areas (journal_id,science_areas_id) values (3,2); -- prirodne nauke
 
 --recenzenti casopisa --
 insert into user_journal_review(reviewer_id, journal_review_id) values (2,1); --nacionalna geografija casopis
 insert into user_journal_review(reviewer_id, journal_review_id) values (3,1);
 insert into user_journal_review(reviewer_id, journal_review_id) values (4,1);
+
+insert into user_journal_review(reviewer_id, journal_review_id) values (3,2); -- hello casopis --
+insert into user_journal_review(reviewer_id, journal_review_id) values (4,2)
 
 -- radovi --
 --insert into article (accepted, apstract, key_words,pdf_path, title, journal_id, science_area_id) values (1,'apstrakt','as' ,'D:\MASTER\UDD\PROJEKAT\Naucna_centrala\nCentrala\files\ČLANAK 1.pdf', 'Article 1',1,2);
