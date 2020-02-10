@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,12 @@ export class FileService {
 
   storeFile(formData : FormData){
     return this.httpClient.post(this.url + "/savefile", formData, { responseType: 'text'})
+  }
+
+  downloadFile(ime : string){
+    return this.httpClient.get(this.url + "/download/"+ime ,{
+      responseType : 'blob',
+      headers:new HttpHeaders().append('Content-Type','application/json')});
   }
 
 }

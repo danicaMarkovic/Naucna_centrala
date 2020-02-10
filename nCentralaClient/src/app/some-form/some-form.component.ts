@@ -287,7 +287,11 @@ export class SomeFormComponent implements OnInit {
       // {
       //   alert("Editor must be choosen");
       // }else
-   //   {
+      if(this.taskName == 'Choose reviewers for article' && countArticleRev < 2)
+      {
+        alert("You must choose min 2 reviewers");
+      }else
+      {
         this.camundaService.finishTaskById(this.taskId,formFields).subscribe(res =>{
       
           alert("Task " + this.taskName + " done.");
@@ -295,7 +299,7 @@ export class SomeFormComponent implements OnInit {
         }, err =>{
           alert("Error while completing task " + this.taskName);
         });
- //     }
+      }
     }
   }
 
@@ -314,6 +318,21 @@ export class SomeFormComponent implements OnInit {
       this.newPdf = res;
     });
     
+  }
+
+  download(value : String){
+
+    console.log("Stiglo " + value);
+    var pom = [];
+    pom = value.split("\\");
+
+    var ime = pom[pom.length - 1];
+
+    this.fileService.downloadFile(ime).subscribe(res => {
+      console.log(res);
+      saveAs(res, ime);
+    });
+
   }
 
   isBlank(str) {

@@ -30,7 +30,7 @@ public class SaveCoauthor implements JavaDelegate {
 		Long smanji = numCo - 1;
 		Article article = articleService.getLastInsertedArticle();
 		
-		Coauthor coauthor = new Coauthor(email, state, state, article);
+		Coauthor coauthor = new Coauthor(email, state, city, article);
 		coService.saveCoauthor(coauthor);
 		
 		execution.setVariable("coauthorsNum", smanji);

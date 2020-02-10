@@ -28,6 +28,7 @@ public class SaveDataMajorChangesDelegate implements JavaDelegate {
 		String newPdf = (String) execution.getVariable("changedPdf");
 
 		execution.setVariable("authorsPdf", newPdf);
+		execution.setVariable("pdf", newPdf);
 		
 		Article article = articleService.getLastInsertedArticle();
 		

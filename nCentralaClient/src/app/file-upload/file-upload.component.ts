@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from '../services/file/file.service';
+//import * as fileSaver from 'file-saver';
+import {saveAs} from 'file-saver';
 
 
 @Component({
@@ -38,6 +40,22 @@ export class FileUploadComponent implements OnInit {
       alert("Uspeh");
     
     });
+  }
+
+  download(){
+
+    let v = "D:\\MASTER\\UDD\\PROJEKAT\\Naucna_centrala\\nCentrala\\files\\ČLANAK 1.pdf";
+    var pom = [];
+
+    pom = v.split("\\");
+
+    var ime = pom[pom.length - 1];
+    console.log(ime);
+
+     this.fileService.downloadFile(ime).subscribe(res => {
+       console.log(res);
+       saveAs(res, ime);
+     });
   }
 
 }

@@ -1,3 +1,4 @@
 <h1>Choose file</h1>
 <input type="file" (change)="onFileSelected($event)">
 <button class="btn btn-primary" [disabled]="!selectedFiles" (click)="upload()">Upload file</button>
+<button class="btn btn-primary" (click)="download()">Download file</button>
