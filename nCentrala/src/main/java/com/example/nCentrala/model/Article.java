@@ -36,6 +36,8 @@ public class Article implements Serializable{
 	@ManyToOne
 	private Journal journal;
 	
+	@ManyToOne
+	private User author;
 	
 	private String pdfPath;
 	
@@ -117,6 +119,14 @@ public class Article implements Serializable{
 
 	public void setPdfPath(String pdfPath) {
 		this.pdfPath = pdfPath;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 	
 }

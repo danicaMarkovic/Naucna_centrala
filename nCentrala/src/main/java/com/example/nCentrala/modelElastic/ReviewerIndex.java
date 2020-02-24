@@ -15,21 +15,25 @@ public class ReviewerIndex {
 	public static final String TYPE_NAME = "reviewer";
 	
 	@Id
-	@Field(type=FieldType.Text, store = true)
 	private Long id;
 	
-	@Field(type=FieldType.Text, store = true)
+	@Field(type=FieldType.Text, store = true, analyzer = "serbian")
 	private String name;
 	
-	@Field(type=FieldType.Text, store = true)
+	@Field(type=FieldType.Text, store = true, analyzer = "serbian")
 	private String surname;
 	
-	@Field(type=FieldType.Text, store = true)
+	@Field(type=FieldType.Text, store = true, analyzer = "serbian")
 	private String city;
+	
+	@Field(type=FieldType.Text, store = true, analyzer = "serbian")
+	private String state;
+
+	@Field(type=FieldType.Text, store = true, analyzer = "serbian")
+	private String scienceAreas;
 	
 	@GeoPointField
 	private GeoPoint revLocation;
-	
 
 	public Long getId() {
 		return id;
@@ -54,7 +58,6 @@ public class ReviewerIndex {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	
 
 	public String getCity() {
 		return city;
@@ -64,7 +67,21 @@ public class ReviewerIndex {
 		this.city = city;
 	}
 
-	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getScienceAreas() {
+		return scienceAreas;
+	}
+
+	public void setScienceAreas(String scienceAreas) {
+		this.scienceAreas = scienceAreas;
+	}
 
 	public GeoPoint getRevLocation() {
 		return revLocation;
@@ -74,12 +91,10 @@ public class ReviewerIndex {
 		this.revLocation = revLocation;
 	}
 
-	public static String getIndexName() {
-		return INDEX_NAME;
+	@Override
+	public String toString() {
+		return "ReviewerIndex [id=" + id + ", name=" + name + ", surname=" + surname + ", city=" + city + ", state="
+				+ state + ", scienceAreas=" + scienceAreas + ", revLocation=" + revLocation + "]";
 	}
 
-	public static String getTypeName() {
-		return TYPE_NAME;
-	}
-	
 }

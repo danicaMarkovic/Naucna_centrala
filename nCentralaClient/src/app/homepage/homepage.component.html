@@ -73,6 +73,9 @@
                                 <a href="/login" *ngIf="isLoggedIn == false">Login</a>
                             </li>
                             <li>
+                                <a href="/search" >Search</a>
+                            </li>
+                            <li>
                                 <a [routerLink]="" (click)="logout()" *ngIf="isLoggedIn == true">Logout</a>
                             </li>
 

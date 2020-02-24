@@ -13,13 +13,17 @@ import { httpInterceptorProviders } from './auth/auth-interceptor.service';
 import { SomeFormComponent } from './some-form/some-form.component';
 import { ActivateUserAccountComponent } from './activate-user-account/activate-user-account.component';
 import { formatDate } from "@angular/common";
+import { SearchComponent } from './search/search.component';
+import { ProbaComponent } from './proba/proba.component';
 
 const appRoutes : Routes = [
           {path : '', component : HomepageComponent},
           {path : 'activate/:id', component : ActivateUserAccountComponent},
           {path : "registration", component : RegistrationComponent},
           {path : 'login', component : LoginComponent},
-          {path : 'form/:id', component : SomeFormComponent}
+          {path : 'form/:id', component : SomeFormComponent},
+          {path : 'search', component : SearchComponent},
+          {path : 'proba', component : ProbaComponent}
 ];
 
 @NgModule({
@@ -31,7 +35,9 @@ const appRoutes : Routes = [
     HomepageComponent,
     LoginComponent,
     SomeFormComponent,
-    ActivateUserAccountComponent
+    ActivateUserAccountComponent,
+    SearchComponent,
+    ProbaComponent
   ],
   imports: [
     BrowserModule,
@@ -47,4 +53,3 @@ const appRoutes : Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

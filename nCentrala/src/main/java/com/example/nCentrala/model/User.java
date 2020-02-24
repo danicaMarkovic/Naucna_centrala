@@ -62,6 +62,12 @@ public class User {
 	@Column(nullable = false)
 	private boolean isActivated;
 	
+	@Column(nullable = false)
+	private double longit;
+	
+	@Column(nullable = false)
+	private double lat;
+	
 	@Column
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonBackReference
@@ -194,6 +200,22 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public double getLongit() {
+		return longit;
+	}
+
+	public void setLongit(double longit) {
+		this.longit = longit;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 	
 }

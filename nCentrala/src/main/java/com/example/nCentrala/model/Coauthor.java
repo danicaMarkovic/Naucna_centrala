@@ -24,16 +24,30 @@ public class Coauthor {
 	@Column(nullable = false)
 	private String city;
 	
+	@Column(nullable = false)
+	private String name;
+	
+	@Column(nullable = false)
+	private String surname;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Article article;
 	
+	@Column(nullable = false)
+	private double longit;
+	
+	@Column(nullable = false)
+	private double latt;
+	
 	public Coauthor() {}
 
-	public Coauthor(String email, String state, String city, Article article) {
+	public Coauthor(String email, String state, String city, String name, String surname, Article article) {
 		super();
 		this.email = email;
 		this.state = state;
 		this.city = city;
+		this.name = name;
+		this.surname = surname;
 		this.article = article;
 	}
 
@@ -75,6 +89,38 @@ public class Coauthor {
 
 	public void setArticle(Article article) {
 		this.article = article;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public double getLongit() {
+		return longit;
+	}
+
+	public void setLongit(double longit) {
+		this.longit = longit;
+	}
+
+	public double getLatt() {
+		return latt;
+	}
+
+	public void setLatt(double latt) {
+		this.latt = latt;
 	}
 	
 }

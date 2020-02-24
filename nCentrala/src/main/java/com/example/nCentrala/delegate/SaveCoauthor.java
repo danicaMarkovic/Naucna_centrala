@@ -25,12 +25,14 @@ public class SaveCoauthor implements JavaDelegate {
 		String email = (String) execution.getVariable("coEmail");
 		String state = (String) execution.getVariable("coState");
 		String city = (String) execution.getVariable("coCity");
+		String name = (String) execution.getVariable("coName");
+		String surname = (String) execution.getVariable("coSurname");
 		
 		Long numCo = (Long) execution.getVariable("coauthorsNum");
 		Long smanji = numCo - 1;
 		Article article = articleService.getLastInsertedArticle();
 		
-		Coauthor coauthor = new Coauthor(email, state, city, article);
+		Coauthor coauthor = new Coauthor(email, state, city,name, surname ,article);
 		coService.saveCoauthor(coauthor);
 		
 		execution.setVariable("coauthorsNum", smanji);

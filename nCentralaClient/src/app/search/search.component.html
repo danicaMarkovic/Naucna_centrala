@@ -1,0 +1,126 @@
+<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="topnav">
+        <a href="#">Homepage</a>
+</div>
+<div class="panel with-nav-tabs panel-info">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li class="active"><a [routerLink]="" (click)="articleSearchView()" data-toggle="tab">Article search</a></li>
+            <li><a  [routerLink]="" (click)="reviewersSearchView()"  data-toggle="tab">Reviewer search</a></li>
+        </ul>
+    </div>
+</div>
+<div class="searchSection">
+        <h2>Search</h2>
+        <table style="width:100%" *ngIf="articleSearch == true">
+            <tr>
+                <th>Search for:</th>
+                <th>
+                    <input type="text" placeholder="Term" class="form-control" name="termBasic" [(ngModel)]="query.value">
+                </th>
+                <th>
+                    <div class="form-inline">
+                        <label>In:</label>
+                        <select class="form-control" name="fieldBasic" [(ngModel)]="query.field">
+                            <option *ngFor='let f of fields' value="{{f}}">{{f}}</option>
+                        </select>
+                        <label>, phrase: </label>
+                        <input type="checkbox" class="form-control" id="phraseQuery" name="phraseQuery" [(ngModel)]="query.phrase">
+                    </div>
+                </th>
+                
+            </tr>
+            <tr *ngFor="let aE of advancedEntity">
+                <td>
+                    <select id={{operator}} name="{{operator}}" class="form-control" [(ngModel)]="aE.operator">
+                        <option *ngFor='let o of advacedOptions' value={{o}}>{{o}}</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" placeholder="Term" class="form-control" id={{term}} name="{{term}}" [(ngModel)]="aE.value">
+                </td>
+                <td>
+                   <div class="form-inline">
+                        <label>In:</label>
+                        <select class="form-control" id={{field}} name="{{field}}" [(ngModel)]="aE.field">
+                            <option *ngFor='let f of advancedfields' value="{{f}}">{{f}}</option>
+                        </select>
+                        <label>, phrase: </label>
+                        <input type="checkbox" class="form-control" id="phrase" name="phrase" [(ngModel)]="aE.phrase">
+                    </div>
+                </td>
+                <td>
+                    <button class="btn" (click)="closeField(aE)"><i class="fa fa-close"></i> Close</button>
+                </td>
+            </tr>
+        </table>
+        <table style="width:100%" *ngIf="articleSearch == false && articleList != null">
+            <tr>
+                <th>Article</th>
+                <th>
+                    <select class="form-control" name="articleField" [(ngModel)]="articleId">
+                        <option value=""></option>
+                        <option *ngFor="let a of articleList" value="{{a.id}}">{{a.title}}, Area:{{a.scienceArea}}, {{a.authors}}</option>
+                    </select>
+                </th>
+                <th>
+                    <div class="form-inline">
+                        <label>Filter:</label>
+                        <select class="form-control" name="fieldBasic" [(ngModel)]="choosenFilter">
+                            <option *ngFor='let f of filters' value="{{f}}">{{f}}</option>
+                        </select>
+                    </div>
+                </th>
+                
+            </tr>
+            
+        </table>
+        <button class="btn" *ngIf="articleSearch == true" (click) = "advancedSearch()"><i class="fa fa-bars">And | Or options</i></button>
+        <button  class="btn" *ngIf="articleSearch == true" (click) = "search()"><i class="fa fa-search">Search</i></button>
+        <button  class="btn" *ngIf="articleSearch == false" (click) = "reviewersSearch()"><i class="fa fa-search">Search</i></button>
+</div>
+
+<div class="resultSection">
+        <h2>Results:</h2>
+        <table style="width:100%" *ngIf="result != null && articleSearch == true">
+            <tr>
+                <th>Title:</th>
+                <th>Author</th>
+                <th>Keywords</th>
+                <th>Highlight</th>
+            </tr>
+            <tr *ngFor="let r of result">
+                <td>{{r.title}}</td>
+                <td>{{r.authors}}</td>
+                <td>{{r.keywords}}</td>
+                <td [innerHTML] = "r.highlight"></td>
+                <td>
+                    <button *ngIf="r.openAccess == true" class="btn" (click)="downloadPdf(r.pdfPath)"><i class="fa fa-download"></i> Download</button>
+                    <button *ngIf="r.openAccess == false" class="btn" id="searchButton" >Buy</button>
+                </td> 
+            </tr>
+        </table>
+        <table style="width:100%" *ngIf="reviewersList != null && articleSearch == false">
+                <tr>
+                    <th>Name:</th>
+                    <th>Surname</th>
+                    <th>City and state</th>
+                    <th>Science areas</th>
+                    <th>Others</th>
+                </tr>
+                <tr *ngFor="let r of reviewersList">
+                    <td>{{r.name}}</td>
+                    <td>{{r.surname}}</td>
+                    <td>{{r.city}}, {{r.state}}</td>
+                    <td>{{r.scienceAreas}}</td>
+                    <td>{{r.description}}</td>
+                </tr>
+            </table>
+</div>

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.nCentrala.model.Article;
 import com.example.nCentrala.model.Reviewer;
 import com.example.nCentrala.service.ArticleService;
-import com.example.nCentrala.service.ReviewerService;
+import com.example.nCentrala.service.ReviewerIndexService;
 import com.example.nCentrala.service.UserService;
 
 @Service

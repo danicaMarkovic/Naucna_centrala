@@ -8,4 +8,7 @@ public interface ArticleJPARepository extends JpaRepository<Article, Long> {
 	Article findOneByTitle(String title);
 	
 	Article findTopByOrderByIdDesc();
+	
+	Article findOneById(Long id);
+	
 }

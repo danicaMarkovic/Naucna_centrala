@@ -126,6 +126,10 @@ public class EmailToAuthorInvalidPdf implements JavaDelegate {
 			
 			article.setAccepted(ArticleStatus.REJECTED);
 			articleService.saveArticle(article);
+		}else if(name.equals("Save data after rejecting and email sending"))
+		{
+			article.setAccepted(ArticleStatus.REJECTED);
+			articleService.saveArticle(article);
 		}
 	}
 

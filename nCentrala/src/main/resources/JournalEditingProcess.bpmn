@@ -181,6 +181,16 @@
               <camunda:constraint name="required" config="true" />
             </camunda:validation>
           </camunda:formField>
+          <camunda:formField id="coName" label="Name" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" config="true" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="coSurname" label="Surname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" config="true" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1dpwuen</bpmn:incoming>

@@ -1,5 +1,7 @@
 package com.example.nCentrala.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,18 @@ public class ArticleServiceImpl implements ArticleService {
 	public Article getLastInsertedArticle() {
 		// TODO Auto-generated method stub
 		return articleRep.findTopByOrderByIdDesc();
+	}
+
+	@Override
+	public List<Article> getAll() {
+		// TODO Auto-generated method stub
+		return articleRep.findAll();
+	}
+
+	@Override
+	public Article getById(Long id) {
+		// TODO Auto-generated method stub
+		return articleRep.findOneById(id);
 	}
 
 }

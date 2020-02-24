@@ -33,4 +33,10 @@ public class ReviewServiceImpl implements ReviewService {
 		reviewRepository.delete(review);
 	}
 
+	@Override
+	public List<Review> findAll() {
+		// TODO Auto-generated method stub
+		return reviewRepository.findAll();
+	}
+
 }
