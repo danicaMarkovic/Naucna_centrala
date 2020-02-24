@@ -56,9 +56,9 @@ public class FilIndexesData {
 	@PostConstruct
 	private void init() throws Exception {
 		
-		this.addArticlesToIndex();
-		this.addReviewersToIndex();
-		this.addReviewesToIndex();
+//		this.addArticlesToIndex();
+//		this.addReviewersToIndex();
+//		this.addReviewesToIndex();
 	}
 	
 	private void addArticlesToIndex() {

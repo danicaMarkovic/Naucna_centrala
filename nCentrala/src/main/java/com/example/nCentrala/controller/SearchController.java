@@ -200,10 +200,10 @@ public class SearchController {
 			}
 		}
 		
-		System.out.println("Upit");
-		System.out.println(qb.toString());
+		//System.out.println("MLT Upit");
+		//System.out.println(qb.toString());
 		
-		highlightBuilderAdvanced.highlightQuery(QueryBuilders.matchQuery(advancedData.getFirstOption().getField(), advancedData.getFirstOption().getValue()));
+		highlightBuilder.highlightQuery(qb);
 		
 		SearchRequestBuilder request = nodeClient.prepareSearch("articleindex")
                 .setQuery(qb)
