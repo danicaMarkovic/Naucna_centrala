@@ -137,8 +137,7 @@ public class SearchController {
 			SearchRequestBuilder request = nodeClient.prepareSearch("articleindex")
 	                .setQuery(queryBuilder)
 	                .setSearchType(SearchType.DEFAULT)
-	                .highlighter(highlightBuilder)
-	                .setSize(100);
+	                .highlighter(highlightBuilder);
 			
 			SearchResponse response = request.get();
 	        
@@ -178,11 +177,26 @@ public class SearchController {
 								
 				if(aQuery.isPhrase())
 				{
-					qb.must(QueryBuilders.matchPhraseQuery(aQuery.getField(), aQuery.getValue()));
+					if(aQuery.getField().equals("All fields"))
+					{
+						qb.must(QueryBuilders.multiMatchQuery(aQuery.getValue(), "text","title","coauthors","author","keywords","journalName","scienceArea").type("phrase"));
+						
+					}else
+					{
+						qb.must(QueryBuilders.matchPhraseQuery(aQuery.getField(), aQuery.getValue()));
+					}
+					
 					
 				}else
 				{
-					qb.must(QueryBuilders.matchQuery(aQuery.getField(), aQuery.getValue()));
+					if(aQuery.getField().equals("All fields"))
+					{
+						qb.must(QueryBuilders.multiMatchQuery(aQuery.getValue(), "text","title","coauthors","author","keywords","journalName","scienceArea"));
+						
+					}else
+					{
+						qb.must(QueryBuilders.matchQuery(aQuery.getField(), aQuery.getValue()));
+					}
 					
 				}
 				
@@ -190,18 +204,25 @@ public class SearchController {
 			{
 				if(aQuery.isPhrase())
 				{
-					qb.should(QueryBuilders.matchPhraseQuery(aQuery.getField(), aQuery.getValue()));
-					
+					if(aQuery.getField().equals("All fields"))
+					{
+						qb.should(QueryBuilders.multiMatchQuery(aQuery.getValue(), "text","title","coauthors","author","keywords","journalName","scienceArea").type("phrase"));
+					}else
+					{
+						qb.should(QueryBuilders.matchPhraseQuery(aQuery.getField(), aQuery.getValue()));
+					}
 				}else
 				{
-					qb.should(QueryBuilders.matchQuery(aQuery.getField(), aQuery.getValue()));
-					
+					if(aQuery.getField().equals("All fields"))
+					{
+						qb.should(QueryBuilders.multiMatchQuery(aQuery.getValue(), "text","title","coauthors","author","keywords","journalName","scienceArea"));
+					}else
+					{
+						qb.should(QueryBuilders.matchQuery(aQuery.getField(), aQuery.getValue()));
+					}
 				}
 			}
 		}
-		
-		//System.out.println("MLT Upit");
-		//System.out.println(qb.toString());
 		
 		highlightBuilder.highlightQuery(qb);
 		
@@ -264,7 +285,6 @@ public class SearchController {
 	public ResponseEntity<List<ReviewerSearchDataDTO>> scienceAreaFilter(@PathVariable("id") Long articleId){
 		
 		Article article = articleService.getById(articleId);
-		//System.out.println("Trazi se naucna oblast: " + article.getScienceArea().getName());
 		
 		List<ReviewerSearchDataDTO> retList = new ArrayList<ReviewerSearchDataDTO>();
 		
@@ -312,16 +332,15 @@ public class SearchController {
 			fields[0] = "content";
 			
 			MoreLikeThisQueryBuilder mltquery = new MoreLikeThisQueryBuilder(fields, content ,null);
-			mltquery.maxQueryTerms(70);
+			mltquery.maxQueryTerms(50);
 			mltquery.minTermFreq(1);
 			mltquery.minimumShouldMatch("80%");
 			mltquery.minDocFreq(1);
+			mltquery.maxDocFreq(20);
 			mltquery.analyzer("serbian");
 			
 			BoolQueryBuilder bqb = QueryBuilders.boolQuery();
 			bqb.must(mltquery);
-			
-			
 			
 			List<ReviewerSearchDataDTO> reviewers = new ArrayList<ReviewerSearchDataDTO>();
 			
@@ -383,9 +402,6 @@ public class SearchController {
 	
 	private List<BasicQueryResult> getDataFromResponse(SearchResponse response){
 		
-		//System.out.println("Response: ");
-        //System.out.println(response);
-		
 		List<BasicQueryResult> list = new ArrayList<BasicQueryResult>();
 		
 		for(SearchHit hit : response.getHits().getHits()) {
@@ -404,8 +420,6 @@ public class SearchController {
 
             Map<String, HighlightField> highlightFields = hit.getHighlightFields();
             for (Map.Entry<String, HighlightField> entry : highlightFields.entrySet()){
-            	
-            	//System.out.println("Field za highlight: " + entry.toString());
             	
             	String value = Arrays.toString(entry.getValue().fragments());
              

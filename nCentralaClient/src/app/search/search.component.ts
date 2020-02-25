@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   private fields = ['All fields','journalName','title','author', 'keywords', 'text', 'scienceArea'];
   private filters = ['Sciene area', 'Geo search', 'More like this search']
   private advacedOptions = ['AND', 'OR'];
-  private advancedfields = ['journalName','title','author', 'coauthors' ,'keywords', 'text', 'scienceArea'];
+  private advancedfields = ['All fields','journalName','title','author', 'coauthors' ,'keywords', 'text', 'scienceArea'];
   private result; 
   private query : BasicSearch = new BasicSearch();
   private advanced = false;
